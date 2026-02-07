@@ -15,11 +15,9 @@ import imgIPhone15Pro from 'figma:asset/21d1360edf0132c07e6253991afe1a55ee6a2bf4
 import imgIPadMini from 'figma:asset/8b112128be2070541f71d6d357666b3c210840ca.png';
 import imgMondayMacBook from 'figma:asset/0b015f0f176342d0f8f762e05031909f478fb58f.png';
 import imgBluevinePhones from 'figma:asset/f54f4c1a2742d29249554b7c7a0e1bb0d76424ff.png';
-import imgBehalf from 'figma:asset/6cc8e44778347a19d233e1c1e9b56e3788c5abf5.png';
-
 const headlines = ['DRIVEN BY USERS', 'THOUGHTFUL DESIGN', 'FOCUSED ON VALUE'];
 
-export default function App() {
+export function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showBigHeadline, setShowBigHeadline] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

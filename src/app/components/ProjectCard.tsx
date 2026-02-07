@@ -6,7 +6,6 @@ interface ProjectCardProps {
   imageSrc: string;
   backgroundColor?: string;
   imagePosition?: 'left' | 'right';
-  onReadCaseStudy?: () => void;
   onClick?: () => void;
 }
 
@@ -16,12 +15,8 @@ export function ProjectCard({
   imageSrc,
   backgroundColor = 'white',
   imagePosition = 'right',
-  onReadCaseStudy,
   onClick,
 }: ProjectCardProps) {
-  // Use onClick if provided, otherwise use onReadCaseStudy
-  const handleClick = onClick || onReadCaseStudy;
-  
   return (
     <div
       className="h-screen flex items-center justify-center px-4 md:px-8 lg:px-16 snap-start snap-always"
@@ -54,7 +49,7 @@ export function ProjectCard({
 
           <div className="flex flex-col items-start p-2 w-full max-w-[217px]">
             <button
-              onClick={handleClick}
+              onClick={onClick}
               className="bg-[#0023a3] hover:bg-[#001a80] transition-colors w-full h-[57px] flex items-center justify-center px-8 py-6 rounded-lg"
             >
               <p className="font-['Poppins:Regular',sans-serif] text-white text-[16px]">
