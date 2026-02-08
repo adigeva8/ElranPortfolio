@@ -20,6 +20,7 @@ function figmaAssetResolver(): Plugin {
 }
 
 export default defineConfig({
+  base: '/elranPortfolio/',
   plugins: [
     figmaAssetResolver(),
     react(),
