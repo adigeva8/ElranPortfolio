@@ -1,5 +1,12 @@
 import { motion } from 'motion/react';
 
+/* ================================================================
+   ProjectCard — Home page project showcase card
+   ================================================================
+   Uses design tokens for all colors, spacing, typography, and radii.
+   Lives in the snap-scroll homepage grid.
+   ================================================================ */
+
 interface ProjectCardProps {
   title: string;
   description: string;
@@ -13,46 +20,49 @@ export function ProjectCard({
   title,
   description,
   imageSrc,
-  backgroundColor = 'white',
+  backgroundColor = 'var(--surface-primary)',
   imagePosition = 'right',
   onClick,
 }: ProjectCardProps) {
   return (
     <div
-      className="h-screen flex items-center justify-center px-4 md:px-8 lg:px-16 snap-start snap-always"
+      className="h-screen flex items-center justify-center px-[var(--content-px)] md:px-[var(--content-px-md)] lg:px-[var(--content-px-lg)] snap-start snap-always"
       style={{ backgroundColor }}
     >
       <div
         className={`flex flex-col-reverse ${
           imagePosition === 'left' ? 'lg:flex-row-reverse' : 'lg:flex-row'
-        } items-center justify-center gap-8 lg:gap-12 xl:gap-20 w-full max-w-7xl`}
+        } items-center justify-center gap-[var(--space-8)] lg:gap-[var(--space-12)] xl:gap-[var(--space-20)] w-full max-w-7xl`}
       >
         {/* Content */}
         <motion.div
-          className="flex flex-col gap-4 md:gap-6 w-full max-w-[508px] px-4 md:px-0"
+          className="flex flex-col gap-[var(--space-4)] md:gap-[var(--space-6)] w-full max-w-[508px] px-[var(--space-4)] md:px-0"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
         >
-          <div className="flex items-center justify-start p-2">
-            <p className="font-bold text-accent text-sm md:text-[16px] tracking-[1.6px] uppercase">
+          {/* Title label */}
+          <div className="flex items-center justify-start p-[var(--space-2)]">
+            <p className="type-label uppercase">
               {title}
             </p>
           </div>
 
-          <div className="flex items-center justify-center p-2">
-            <p className="font-extralight text-text-primary text-[28px] leading-tight tracking-[-0.72px]">
+          {/* Description */}
+          <div className="flex items-center justify-center p-[var(--space-2)]">
+            <p className="font-[var(--weight-extralight)] text-text-primary text-[28px] leading-tight tracking-[var(--tracking-tight)]">
               {description}
             </p>
           </div>
 
-          <div className="flex flex-col items-start p-2 w-full max-w-[217px]">
+          {/* CTA button */}
+          <div className="flex flex-col items-start p-[var(--space-2)] w-full max-w-[217px]">
             <button
               onClick={onClick}
-              className="bg-brand hover:bg-brand-hover transition-colors w-full h-[57px] flex items-center justify-center px-8 py-6 rounded-lg"
+              className="bg-brand hover:bg-brand-hover transition-colors duration-[var(--duration-normal)] w-full h-[var(--button-height)] flex items-center justify-center px-[var(--button-px)] py-[var(--space-6)] rounded-[var(--button-radius)]"
             >
-              <p className="text-white text-[16px]">
+              <p className="text-text-inverse text-[var(--text-body)]">
                 Read case study
               </p>
             </button>

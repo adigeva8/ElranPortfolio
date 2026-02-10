@@ -73,14 +73,14 @@ export function App() {
     <div className="h-screen overflow-y-scroll snap-y snap-mandatory">
       {/* Hero Page */}
       <motion.div 
-        className="bg-black text-white h-screen flex flex-col snap-start snap-always"
+        className="bg-surface-dark text-text-inverse h-screen flex flex-col snap-start snap-always"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, ease: 'easeOut' }}
       >
         {/* Header */}
         <motion.header 
-          className="flex items-center justify-between px-4 md:px-6 py-4 md:py-6 font-light relative"
+          className="flex items-center justify-between px-[var(--content-px)] md:px-[var(--content-px-md)] py-[var(--space-4)] md:py-[var(--space-6)] font-[var(--weight-light)] relative"
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.5, ease: 'easeOut' }}
@@ -88,19 +88,19 @@ export function App() {
           <div className="text-sm md:text-lg">elran levy portfolio</div>
           
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex gap-4 md:gap-8 text-sm md:text-base">
-            <a href="#work" className="hover:opacity-70 transition-opacity font-normal underline underline-offset-4">
+          <nav className="hidden md:flex gap-[var(--space-4)] md:gap-[var(--space-8)] text-sm md:text-base">
+            <a href="#work" className="hover:opacity-70 transition-opacity duration-[var(--duration-fast)] font-[var(--weight-normal)] underline underline-offset-4">
               main
             </a>
             <button 
               onClick={() => setCurrentPage('about')}
-              className="hover:opacity-70 transition-opacity font-light"
+              className="hover:opacity-70 transition-opacity duration-[var(--duration-fast)] font-[var(--weight-light)]"
             >
               about
             </button>
             <button 
               onClick={() => setCurrentPage('contact')}
-              className="hover:opacity-70 transition-opacity font-light"
+              className="hover:opacity-70 transition-opacity duration-[var(--duration-fast)] font-[var(--weight-light)]"
             >
               contact
             </button>
@@ -127,18 +127,18 @@ export function App() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: '100%' }}
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
-                className="fixed inset-0 bg-black z-40 flex items-center justify-center md:hidden"
+                className="fixed inset-0 bg-surface-dark z-[var(--z-overlay)] flex items-center justify-center md:hidden"
               >
-                <nav className="flex flex-col gap-8 text-[20px] text-center">
+                <nav className="flex flex-col gap-[var(--space-8)] text-[20px] text-center">
                   <a 
                     href="#work" 
-                    className="hover:opacity-70 transition-opacity font-light underline underline-offset-4"
+                    className="hover:opacity-70 transition-opacity font-[var(--weight-light)] underline underline-offset-4"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     main
                   </a>
                   <button 
-                    className="hover:opacity-70 transition-opacity font-light"
+                    className="hover:opacity-70 transition-opacity font-[var(--weight-light)]"
                     onClick={() => {
                       setMobileMenuOpen(false);
                       setCurrentPage('about');
@@ -147,7 +147,7 @@ export function App() {
                     about
                   </button>
                   <button 
-                    className="hover:opacity-70 transition-opacity font-light"
+                    className="hover:opacity-70 transition-opacity font-[var(--weight-light)]"
                     onClick={() => {
                       setMobileMenuOpen(false);
                       setCurrentPage('contact');
@@ -162,21 +162,20 @@ export function App() {
         </motion.header>
 
         {/* Main Content */}
-        <main className="flex-1 flex flex-col items-center justify-center px-4 md:px-6 text-center relative">
+        <main className="flex-1 flex flex-col items-center justify-center px-[var(--content-px)] md:px-[var(--content-px-md)] text-center relative">
         <div className="flex flex-col items-center">
           <motion.p 
-            className="max-w-4xl mb-[30px] text-[17px] md:text-[19px] lg:text-[22px] leading-relaxed font-thin px-4"
+            className="max-w-4xl mb-[var(--space-8)] text-[var(--text-body)] md:text-[18px] lg:text-[22px] leading-[var(--leading-relaxed)] font-[var(--weight-thin)] px-[var(--space-4)]"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.3, ease: 'easeOut' }}
           >
             I merge relentless strategy with flawless execution to build digital
-            products that are more than just functional or beautiful - They are a
-            force powered by:
+            products that are more than just functional or beautiful - they are:
           </motion.p>
 
           {/* Animated Headline */}
-          <div className="relative h-24 md:h-32 lg:h-48 flex items-center justify-center w-full overflow-visible px-4">
+          <div className="relative h-24 md:h-32 lg:h-48 flex items-center justify-center w-full overflow-visible px-[var(--space-4)]">
             {showBigHeadline && (
               <AnimatePresence mode="wait">
                 <motion.h1
@@ -188,9 +187,9 @@ export function App() {
                     duration: 0.8,
                     ease: 'easeInOut',
                   }}
-                  className="absolute text-4xl md:text-4xl lg:text-7xl xl:text-8xl font-black whitespace-normal md:whitespace-nowrap"
+                  className="absolute text-4xl md:text-4xl lg:text-7xl xl:text-8xl font-[var(--weight-black)] whitespace-normal md:whitespace-nowrap"
                   style={{
-                    backgroundImage: 'linear-gradient(90deg, #a8c5ff 0%, #ffffff 50%, #a8c5ff 100%)',
+                    backgroundImage: `linear-gradient(90deg, var(--color-blue-gradient) 0%, var(--color-white) 50%, var(--color-blue-gradient) 100%)`,
                     backgroundSize: '200% 100%',
                     WebkitBackgroundClip: 'text',
                     backgroundClip: 'text',
@@ -199,7 +198,7 @@ export function App() {
                 >
                   <motion.span
                     style={{
-                      backgroundImage: 'linear-gradient(90deg, #a8c5ff 0%, #ffffff 50%, #a8c5ff 100%)',
+                      backgroundImage: `linear-gradient(90deg, var(--color-blue-gradient) 0%, var(--color-white) 50%, var(--color-blue-gradient) 100%)`,
                       backgroundSize: '200% 100%',
                       WebkitBackgroundClip: 'text',
                       backgroundClip: 'text',
@@ -223,7 +222,7 @@ export function App() {
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2">
+        <div className="absolute bottom-[var(--space-8)] md:bottom-[var(--space-12)] left-1/2 -translate-x-1/2">
           <motion.div
             animate={{ y: [0, 10, 0] }}
             transition={{
@@ -231,9 +230,9 @@ export function App() {
               repeat: Infinity,
               ease: 'easeInOut',
             }}
-            className="w-5 h-8 md:w-6 md:h-10 border-2 border-white rounded-full flex items-start justify-center p-2"
+            className="w-5 h-8 md:w-6 md:h-10 border-2 border-text-inverse rounded-[var(--radius-full)] flex items-start justify-center p-[var(--space-2)]"
           >
-            <div className="w-1 h-2 bg-white rounded-full" />
+            <div className="w-1 h-2 bg-text-inverse rounded-[var(--radius-full)]" />
           </motion.div>
         </div>
       </main>
@@ -244,7 +243,7 @@ export function App() {
         title="FUNDGUARD"
         description="Turning Operational Complexity into Clear, Actionable Systems. Designing scalable workflows for investment operations teams"
         imageSrc={imgMacStudio}
-        backgroundColor="var(--bg-primary)"
+        backgroundColor="var(--surface-primary)"
         imagePosition="right"
         onClick={() => setCurrentPage('fundguard')}
       />
@@ -254,7 +253,7 @@ export function App() {
         title="Monday.com"
         description="monday.com is a work management platform that helps teams plan, track, and collaborate efficiently together daily."
         imageSrc={imgMondayMacBook}
-        backgroundColor="var(--bg-secondary)"
+        backgroundColor="var(--surface-secondary)"
         imagePosition="left"
         onClick={() => setCurrentPage('monday')}
       />
@@ -264,7 +263,7 @@ export function App() {
         title="bit - app"
         description="Israel's leading P2P payments app - designing a lean, data-driven money transfer experience for millions of users."
         imageSrc={imgIPhone15Pro}
-        backgroundColor="var(--bg-primary)"
+        backgroundColor="var(--surface-primary)"
         imagePosition="right"
         onClick={() => setCurrentPage('bit')}
       />
@@ -274,7 +273,7 @@ export function App() {
         title="Bluevine"
         description="Bluevine is a mobile banking app designed to help small businesses manage their finances quickly and confidently."
         imageSrc={imgBluevinePhones}
-        backgroundColor="var(--bg-secondary)"
+        backgroundColor="var(--surface-secondary)"
         imagePosition="left"
         onClick={() => setCurrentPage('bluevine')}
       />
@@ -284,7 +283,7 @@ export function App() {
         title="Xtream IO"
         description="Xtream IO is an all-flash storage platform delivering high performance, scalability, and simplified data management enterprise."
         imageSrc={imgIPadMini}
-        backgroundColor="var(--bg-primary)"
+        backgroundColor="var(--surface-primary)"
         imagePosition="right"
         onClick={() => setCurrentPage('xtreamio')}
       />

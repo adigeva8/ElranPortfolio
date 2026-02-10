@@ -1,8 +1,12 @@
 import svgPaths from './svg-6er71w85ab';
-import imgEllipse1 from 'figma:asset/cb6c26a26eb13e90ea5ecf24823f3c986006a5f1.png';
-import imgEllipse2 from 'figma:asset/3b45a734486c2ad109272a29a0304264a8841680.png';
-import imgEllipse3 from 'figma:asset/c057367220688f95b8d2e907199fe1e71309cf14.png';
-import imgEllipse4 from 'figma:asset/82c97c6e06591eb530f740c7bf70ff2dded31977.png';
+
+/* ── Persona avatars ── */
+import imgPersonaDavid from 'figma:asset/5d3def7ca464ae5365be191398199d7010963edb.png';
+import imgPersonaAmit from 'figma:asset/d9f497c1c12284df2c1dcb7e42ec96b3ad9e90a3.png';
+import imgPersonaMick from 'figma:asset/3e75e43b1469fc669a142c7cb0cb35379ce87e61.png';
+import imgPersonaGabriel from 'figma:asset/ea720abd5b92c264c19b062a6eb646cfb048d657.png';
+
+/* ── Case study images ── */
 import imgImage195 from 'figma:asset/135037eee94c070be011542ce34df21d09e0887c.png';
 import imgImage196 from 'figma:asset/d2bbf953c2e0dff1f47983ab05675e22222adadc.png';
 import imgStep4 from 'figma:asset/e528a6e576ff61dfdedceda779b402b8cad6f7a3.png';
@@ -13,6 +17,15 @@ import imgBoardWithCactusAndPhone15313006711 from 'figma:asset/1283a766b980685a6
 import whyStandardVideo from '@/assets/why-standard-video.mp4';
 import whyProVideo from '@/assets/why-pro-video.mp4';
 
+/* ── Discovery & Promoted feature images ── */
+import imgDiscovery212 from 'figma:asset/5891221db0f506e2ed13854c9b561b0eb94c1c45.png';
+import imgDiscovery213 from 'figma:asset/46afff3de4b74b1fcd9fb6e6c6e34dc0511a1347.png';
+import imgPromoted214 from 'figma:asset/2abdc6c0f0e1dc734eb659df7608c23f65d0828f.png';
+import imgPromoted215 from 'figma:asset/590fcf0486ea5c0624f74a9ad643a26091276ee4.png';
+
+/* ── A/B test chart ── */
+import imgAbChart from '@/assets/monday-ab-chart.png';
+
 
 import {
   Section,
@@ -22,11 +35,13 @@ import {
   HypothesisBlock,
   InsightBlock,
   CaseStudyImage,
+  FullBleedImage,
   QuoteBanner,
   ImageWithQuote,
   CaseStudyHero,
   CaseStudyBody,
   ImageGrid,
+  LazyVideo,
 } from '@/app/components/case-study/CaseStudyPrimitives';
 
 /* ── Monday.com Logo (SVG) ──────────────────────────────── */
@@ -53,14 +68,15 @@ function MondayLogo() {
 /* ============================================================
    MONDAY.COM CASE STUDY — Responsive Rewrite
    ============================================================ */
+
 export default function CaseStutyMondayConent() {
   return (
     <>
       {/* ── 1. Hero ─────────────────────────────────────── */}
       <CaseStudyHero
         logo={<MondayLogo />}
-        title="Designing Confidence at the Moment of Commitment"
-        subtitle="When users are ready — but afraid to choose wrong"
+        title="Designing confidence at the moment of commitment,"
+        subtitle="when users are ready - but afraid to choose wrong."
         heroImage={imgBoardWithCactusAndPhone15313006711}
         heroImageAlt="monday.com board with phone"
       />
@@ -85,11 +101,9 @@ export default function CaseStutyMondayConent() {
           ]}
         />
 
-        <div className="mt-10 md:mt-14 flex flex-col gap-1 text-sm md:text-base leading-6 tracking-[0.64px] text-[#1e3543]">
+        <div className="mt-[var(--space-10)] md:mt-[var(--space-14)] flex flex-col gap-1 type-body">
           <p>This wasn&rsquo;t about pricing sensitivity or feature gaps.</p>
-          <p>
-            It was about <span className="font-medium">decision confidence</span>.
-          </p>
+          <p>It was about decision confidence.</p>
           <p>They were asking:</p>
     </div>
 
@@ -103,7 +117,7 @@ export default function CaseStutyMondayConent() {
           />
       </div>
 
-        <p className="mt-12 md:mt-16 text-base md:text-lg lg:text-xl font-normal text-[#182730]">
+        <p className="mt-[var(--space-12)] md:mt-[var(--space-16)] type-h2 font-[var(--weight-light)] text-text-primary">
           The challenge was to design a moment that helps users commit without
           regret.
         </p>
@@ -125,28 +139,28 @@ export default function CaseStutyMondayConent() {
             {
               name: 'David Hope',
               role: 'Team Lead',
-              image: imgEllipse1,
+              image: imgPersonaDavid,
               quote:
                 "Once the trial ended, it wasn't clear which plan actually fit my team's needs. Every tier sounded similar, but the limitations only appeared too late.",
             },
             {
               name: 'Amit Sharon',
               role: 'Operations Manager',
-              image: imgEllipse2,
+              image: imgPersonaAmit,
               quote:
                 'Each plan supports a different workflow, but comparing them felt overwhelming. I was afraid of choosing the wrong tier and blocking my team.',
             },
             {
               name: 'Mick moshes',
               role: 'Startup Founder',
-              image: imgEllipse3,
+              image: imgPersonaMick,
               quote:
                 "Upgrading felt risky. I needed clarity on what I'd gain immediately versus what I'd outgrow in a few months.",
             },
             {
               name: 'Gabriel dd',
               role: 'Project Manager',
-              image: imgEllipse4,
+              image: imgPersonaGabriel,
               quote:
                 "I didn't mind paying, but I needed confidence. It was hard to understand which features were essential for my day-to-day work.",
             },
@@ -171,9 +185,9 @@ export default function CaseStutyMondayConent() {
           ]}
         />
 
-        <div className="mt-12 md:mt-16">
+        <div className="mt-[var(--space-12)] md:mt-[var(--space-16)]">
           <InsightBlock label="Key insight:">
-            <p className="text-lg md:text-xl lg:text-2xl font-medium mb-4">
+            <p className="type-insight-title mb-[var(--space-4)]">
               Abandonment wasn&rsquo;t rejection — it was avoidance.
             </p>
             <p>
@@ -209,7 +223,7 @@ export default function CaseStutyMondayConent() {
           ]}
         />
 
-        <p className="mt-8 text-sm md:text-base leading-7 tracking-[0.64px] text-[#1e3543]">
+        <p className="mt-[var(--space-8)] type-body">
           This meant working entirely within existing constraints:
         </p>
 
@@ -223,7 +237,7 @@ export default function CaseStutyMondayConent() {
           />
     </div>
 
-        <p className="mt-6 text-sm md:text-base leading-7 tracking-[0.64px] text-[#1e3543]">
+        <p className="mt-[var(--space-6)] type-body">
           Only clearer decision support.
         </p>
       </Section>
@@ -243,7 +257,7 @@ export default function CaseStutyMondayConent() {
           </p>
         </SectionTitle>
 
-        <div className="flex flex-col gap-6 md:gap-8">
+        <div className="flex flex-col gap-[var(--space-6)] md:gap-[var(--space-8)]">
           <HypothesisBlock
             number={1}
             title="If users see a plan recommendation based on their own activity, they will feel more confident selecting a plan."
@@ -328,18 +342,18 @@ export default function CaseStutyMondayConent() {
         </SectionTitle>
 
         {/* Variant descriptions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-[var(--space-6)] md:gap-[var(--space-8)]">
           <div>
-            <h3 className="text-lg md:text-xl font-normal mb-2">Variant A</h3>
-            <p className="text-sm md:text-base leading-6 text-black">
+            <h3 className="type-h3 mb-[var(--space-2)]">Variant A</h3>
+            <p className="type-body-info">
           Pattern: Recommendation + Feature explanation + Why banner
               <br />
               Mental model: &ldquo;Trust us — Pro is better for you.&rdquo;
         </p>
       </div>
           <div>
-            <h3 className="text-lg md:text-xl font-normal mb-2">Variant B</h3>
-            <p className="text-sm md:text-base leading-6 text-black">
+            <h3 className="type-h3 mb-[var(--space-2)]">Variant B</h3>
+            <p className="type-body-info">
           Pattern: Recommendation + Usage proof + Recommendation
               <br />
               Mental model: &ldquo;Here&rsquo;s evidence — Pro fits how you
@@ -349,12 +363,12 @@ export default function CaseStutyMondayConent() {
         </div>
 
         {/* Variant images */}
-        <div className="mt-6 md:mt-8">
+        <div className="mt-[var(--space-6)] md:mt-[var(--space-8)]">
           <ImageGrid images={[imgImage190, imgImage189]} columns={2} alt="A/B test variant" />
     </div>
 
         {/* Results section */}
-        <div className="mt-12 md:mt-16">
+        <div className="mt-[var(--space-12)] md:mt-[var(--space-16)]">
           <SectionTitle title="Usage-Driven Recommendations Increased Pro Conversions by 35%">
             <p>
               We tested two upgrade experiences — a generic recommendation vs. a
@@ -366,22 +380,32 @@ export default function CaseStutyMondayConent() {
           </SectionTitle>
       </div>
 
+        {/* A/B test chart — Mixpanel style */}
+        <div className="mt-[var(--space-8)]">
+          <CaseStudyImage
+            src={imgAbChart}
+            alt="A/B test conversion trend chart — Variant A vs Variant B daily cumulative conversion rate"
+            className="rounded-lg"
+          />
+        </div>
+
         {/* Step 4 / final visual */}
-        <div className="mt-8 bg-[#66697b] rounded-xl p-4 md:p-8">
+        <div className="mt-[var(--space-8)] bg-[var(--color-gray-600)] rounded-xl p-[var(--space-4)] md:p-[var(--space-8)]">
           <CaseStudyImage
             src={imgStep4}
             alt="A/B test result step 4"
             className="rounded-lg"
           />
-    </div>
+        </div>
       </Section>
 
       {/* ── 9. Visual Guidance ──────────────────────────── */}
-      <section className="w-full py-12 md:py-16 lg:py-24 bg-[#f5f5f5]"
+      <section
+        className="w-full py-[var(--section-py)] md:py-[var(--section-py-md)] lg:py-[var(--section-py-lg)] bg-surface-secondary"
         style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 600px' }}
       >
         {/* Title at standard width */}
-        <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-16">
+        <div className="max-w-[var(--content-max-w)] mx-auto px-[var(--content-px)] md:px-[var(--content-px-md)] lg:px-[var(--content-px-lg)]">
           <SectionTitle title="Helping Users Choose the Right Plan with Visual Guidance">
             <p>
               During the trial end flow, we saw that many users reached the
@@ -395,7 +419,7 @@ export default function CaseStutyMondayConent() {
         </div>
 
         {/* Image at 40% wider container */}
-        <div className="max-w-[1720px] mx-auto px-6 md:px-8 lg:px-12">
+        <div className="max-w-[1720px] mx-auto px-[var(--content-px)] md:px-[var(--content-px-md)] lg:px-[var(--space-12)]">
           <CaseStudyImage
             src={imgImage195}
             alt="Plan selection interface"
@@ -404,8 +428,8 @@ export default function CaseStutyMondayConent() {
         </div>
 
         {/* Explanatory text */}
-        <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-16 mt-8 md:mt-12">
-          <div className="text-sm md:text-base leading-7 tracking-[0.64px] text-[#1e3543]">
+        <div className="max-w-[var(--content-max-w)] mx-auto px-[var(--content-px)] md:px-[var(--content-px-md)] lg:px-[var(--content-px-lg)] mt-[var(--space-8)] md:mt-[var(--space-12)]">
+          <div className="type-body">
             <p>
               To reduce friction, we introduced short explainer videos directly in
               the decision flow. The videos visually walk through how each tier
@@ -418,7 +442,7 @@ export default function CaseStutyMondayConent() {
         </div>
 
         {/* Plan comparison image — wider, cropped 20% from edges */}
-        <div className="max-w-[1720px] mx-auto px-6 md:px-8 lg:px-12 mt-8">
+        <div className="max-w-[1720px] mx-auto px-[var(--content-px)] md:px-[var(--content-px-md)] lg:px-[var(--space-12)] mt-[var(--space-8)]">
           <div className="overflow-hidden rounded-lg">
             <img
               src={imgImage196}
@@ -431,25 +455,17 @@ export default function CaseStutyMondayConent() {
         </div>
 
         {/* Why Standard / Why Pro boxes — under plan comparison image */}
-        <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-            <div className="bg-[#d0d0d1] rounded-2xl overflow-hidden flex items-center justify-center">
-              <video
+        <div className="max-w-[var(--content-max-w)] mx-auto px-[var(--content-px)] md:px-[var(--content-px-md)] lg:px-[var(--content-px-lg)]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-[var(--space-4)] md:gap-[var(--space-6)]">
+            <div className="bg-[var(--color-gray-400)] rounded-[var(--radius-2xl)] overflow-hidden flex items-center justify-center">
+              <LazyVideo
                 src={whyStandardVideo}
-                autoPlay
-                loop
-                muted
-                playsInline
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="bg-[#d0d0d1] rounded-2xl overflow-hidden flex items-center justify-center">
-              <video
+            <div className="bg-[var(--color-gray-400)] rounded-[var(--radius-2xl)] overflow-hidden flex items-center justify-center">
+              <LazyVideo
                 src={whyProVideo}
-                autoPlay
-                loop
-                muted
-                playsInline
                 className="w-full h-full object-cover"
               />
             </div>
@@ -457,16 +473,78 @@ export default function CaseStutyMondayConent() {
         </div>
       </section>
 
-      {/* ── 10. Outcome Quote ───────────────────────────── */}
-      <QuoteBanner bg="bg-[#f5f5f5] !pb-6 md:!pb-10" className="text-sm md:text-xl lg:text-[29px] font-extralight text-center leading-relaxed tracking-[-0.72px] text-black">
-        The improved experience led to a significant increase in product
-        adoption and engagement, driving a 170% growth in usage. By reducing
-        friction, increasing clarity, and giving users faster financial
-        control, the product shifted from a functional tool to a daily
-        business essential.
+      {/* ── 10. Promoting Discovery ─────────────────────── */}
+      <Section>
+        <SectionTitle title="Promoting Discovery Through Value, Not Just Access">
+          <p>
+            This approach encourages users to try new features by connecting them
+            to real, existing behaviors &mdash; not by simply placing them behind a
+            paywall. Instead of saying &ldquo;you can&rsquo;t use this&rdquo; it
+            shows why this matters for how you already work.
+          </p>
+          <p>
+            By highlighting how a feature improves something users already do
+            (like managing dates &rarr; managing time strategy) you create
+            curiosity, relevance, and a natural upgrade motivation.
+          </p>
+          <p>
+            The goal isn&rsquo;t pressure &mdash; it&rsquo;s helping users
+            recognize, &ldquo;This would actually make my workflow better.&rdquo;
+          </p>
+        </SectionTitle>
+      </Section>
+
+      {/* Discovery images — full-width, stacked */}
+      <div className="w-full">
+        <FullBleedImage
+          src={imgDiscovery212}
+          alt="Feature discovery through value — overview"
+        />
+        <FullBleedImage
+          src={imgDiscovery213}
+          alt="Feature discovery through value — detail"
+        />
+      </div>
+
+      <Section>
+        <SectionTitle title="Promoted Features That Match How You Already Work">
+          <p>
+            I designed feature promotion to feel contextual and helpful &mdash;
+            not interruptive. By surfacing locked capabilities exactly where users
+            naturally need them, the product both highlights premium value and
+            educates users on better ways to work.
+          </p>
+          <p>
+            This approach turns feature discovery into a learning moment. Instead
+            of pushing upgrades aggressively, it visually emphasizes advanced
+            tools (like formulas, timeline, and automation) at the point of
+            intent &mdash; making the upgrade feel like a natural next step, not a
+            forced decision.
+          </p>
+        </SectionTitle>
+      </Section>
+
+      {/* Promoted features images — full-width, stacked */}
+      <div className="w-full">
+        <FullBleedImage
+          src={imgPromoted214}
+          alt="Promoted features matching existing workflow — overview"
+        />
+        <FullBleedImage
+          src={imgPromoted215}
+          alt="Promoted features matching existing workflow — detail"
+        />
+      </div>
+
+      {/* ── 11. Outcome Quote ──────────────────────────── */}
+      <QuoteBanner bg="bg-surface-secondary" className="type-display text-center text-text-primary !pb-6 md:!pb-10">
+        The feature upgrade experience shifted from being a limitation message
+        to a value-driven moment. By highlighting features in context and tying
+        them to real user workflows, the upgrade path became clearer, more
+        relevant, and more motivating.
       </QuoteBanner>
 
-      {/* ── 11. Final Quote ─────────────────────────────── */}
+      {/* ── 12. Final Quote ─────────────────────────────── */}
       <ImageWithQuote
         src={imgImage193}
         alt="Monday.com closing"

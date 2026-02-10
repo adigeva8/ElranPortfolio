@@ -1,143 +1,240 @@
-/* ============================================================
-   Design System — Elran Portfolio
-   Single source of truth for all design tokens.
-   ============================================================ */
+/* ================================================================
+   Theme — Tailwind v4 Bridge & Base Styles
+   ================================================================
+   Maps design tokens (from tokens.css) → Tailwind utility classes
+   via @theme inline, and sets global base styles.
 
-:root {
-  /* --- Typography --- */
-  --font-family: 'Poppins', sans-serif;
-  --font-size: 16px;
-  --font-weight-thin: 100;
-  --font-weight-extralight: 200;
-  --font-weight-light: 300;
-  --font-weight-normal: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
-  --font-weight-black: 900;
+   Token file:  ./tokens.css   (single source of truth)
+   Font file:   ./fonts.css    (Google Fonts imports)
+   ================================================================ */
 
-  /* --- Brand Colors --- */
-  --brand: #0023a3;
-  --brand-hover: #001a80;
-  --accent: #4f799a;
-  --gradient-blue: #a8c5ff;
-
-  /* --- Text Colors --- */
-  --text-primary: #182730;
-  --text-inverse: #ffffff;
-
-  /* --- Background Colors --- */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f5f5f5;
-  --bg-dark: #000000;
-
-  /* --- Border Colors --- */
-  --border-light: var(--bg-secondary);
-  --border-medium: #d1d5db; /* gray-300 */
-
-  /* --- Semantic (Tailwind bridge) --- */
-  --background: var(--bg-primary);
-  --foreground: var(--text-primary);
-  --border: rgba(0, 0, 0, 0.1);
-  --ring: var(--brand);
-
-  /* --- Radii --- */
-  --radius: 0.5rem; /* rounded-lg = 8px */
-
-  /* --- Component: Button --- */
-  --button-height: 57px;
-  --button-radius: var(--radius);
-}
-
-/* --- Tailwind v4 theme bridge ---
-   Maps `:root` custom properties → Tailwind utility classes.
-   IMPORTANT: token names here (--color-brand, --color-accent, etc.)
-   must NOT collide with `:root` property names to avoid circular refs.
-*/
+/* ── Tailwind v4 theme bridge ──────────────────────────────────
+   Names here become utility classes:
+     --color-brand      → bg-brand, text-brand, border-brand
+     --color-accent     → bg-accent, text-accent
+     --color-surface-*  → bg-surface-secondary
+     --color-text-*     → text-text-primary
+     --radius-*         → rounded-sm, rounded-md, etc.
+     --shadow-*         → shadow-sm, shadow-md, etc.
+   ────────────────────────────────────────────────────────────── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-border: var(--border);
-  --color-ring: var(--ring);
+  /* Semantic colors */
+  --color-background:       var(--surface-primary);
+  --color-foreground:       var(--text-primary);
+  --color-border:           var(--border-default);
+  --color-ring:             var(--ring);
 
-  --color-brand: var(--brand);
-  --color-brand-hover: var(--brand-hover);
-  --color-accent: var(--accent);
-  --color-text-primary: var(--text-primary);
-  --color-bg-secondary: var(--bg-secondary);
+  /* Brand */
+  --color-brand:            var(--brand);
+  --color-brand-hover:      var(--brand-hover);
+  --color-accent:           var(--accent);
 
-  --radius-sm: calc(var(--radius) - 2px);
-  --radius-md: var(--radius);
-  --radius-lg: calc(var(--radius) + 4px);
-  --radius-xl: calc(var(--radius) + 8px);
+  /* Surfaces */
+  --color-surface-primary:   var(--surface-primary);
+  --color-surface-secondary: var(--surface-secondary);
+  --color-surface-dark:      var(--surface-dark);
+
+  /* Text */
+  --color-text-primary:   var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary:  var(--text-tertiary);
+  --color-text-inverse:   var(--text-inverse);
+
+  /* Border */
+  --color-border-subtle: var(--border-subtle);
+  --color-border-muted:  var(--border-muted);
+
+  /* Case-study accents */
+  --color-teal:  var(--color-teal-500);
+  --color-pink:  var(--color-pink-500);
+  --color-bluevine: var(--color-blue-500);
+
+  /* Radii */
+  --radius-sm:   var(--radius-sm);
+  --radius-md:   var(--radius-md);
+  --radius-lg:   var(--radius-lg);
+  --radius-xl:   var(--radius-xl);
+  --radius-2xl:  var(--radius-2xl);
+  --radius-full: var(--radius-full);
+
+  /* Shadows */
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
 }
 
-/* --- Base layer --- */
+/* ── Base layer ────────────────────────────────────────────────
+   Global resets and defaults that apply to every page.
+   ────────────────────────────────────────────────────────────── */
 @layer base {
   * {
     @apply border-border;
   }
 
+  /* Hide scrollbar */
+  html {
+    font-size: var(--text-body);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scrollbar-width: none; /* Firefox */
+  }
+
+  html::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+
   body {
     @apply bg-background text-foreground;
+    line-height: var(--leading-normal);
   }
 
-  html {
-    font-size: var(--font-size);
-    font-family: var(--font-family);
+  /* Heading defaults — Figma uses LH normal for headings */
+  h1, h2, h3, h4 {
+    font-weight: var(--weight-medium);
+    line-height: normal;
+    color: var(--text-primary);
   }
 
-  h1 {
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
-  }
-
-  h2 {
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
-  }
-
-  h3 {
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
-  }
-
-  h4 {
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
-  }
-
-  label {
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
-  }
-
-  button {
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
+  /* Form defaults */
+  label, button {
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-normal);
   }
 
   input, textarea {
-    font-weight: var(--font-weight-normal);
-    line-height: 1.5;
+    font-weight: var(--weight-normal);
+    line-height: var(--leading-normal);
   }
 
+  /* Focus ring */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+/* ── Typography utility classes ────────────────────────────────
+   Composable classes that map to the Figma type scale.
+   Use these in components for consistent typography.
+   ────────────────────────────────────────────────────────────── */
+@layer utilities {
+  /* Display — 48px, light, wide tracking (quote banners) */
+  .type-display {
+    font-family: var(--font-sans);
+    font-weight: var(--weight-light);
+    font-size: clamp(1.25rem, 3vw + 0.5rem, 3rem);  /* 20px → 48px */
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  /* H1 — 36px, light, tight (main headline, rare — e.g. Outcome banners) */
+  .type-h1 {
+    font-family: var(--font-sans);
+    font-weight: var(--weight-light);
+    font-size: clamp(1.125rem, 2vw + 0.5rem, 2.25rem);  /* 18px → 36px */
+    line-height: var(--leading-none);
+    letter-spacing: var(--tracking-normal);
+  }
+
+  /* Hero title — 24px, light, normal LH (case study hero pages — Figma: Poppins Light 24px) */
+  .type-hero-title {
+    font-family: var(--font-sans);
+    font-weight: var(--weight-light);
+    font-size: clamp(1.125rem, 1.5vw + 0.5rem, 1.5rem);  /* 18px → 24px */
+    line-height: normal;
+    letter-spacing: var(--tracking-normal);
+    color: var(--color-black);
+  }
+
+  /* H2 — 24px, normal, section headings (Figma: LH normal ≈ 1.2) */
+  .type-h2 {
+    font-family: var(--font-sans);
+    font-weight: var(--weight-normal);
+    font-size: clamp(1.125rem, 1.5vw + 0.5rem, 1.5rem);  /* 18px → 24px */
+    line-height: normal;
+    letter-spacing: var(--tracking-normal);
+    color: var(--text-primary);
+  }
+
+  /* H3 — 24px, medium, hypothesis / subsection (Figma: LH 1.5, LS 0.32) */
+  .type-h3 {
+    font-family: var(--font-sans);
+    font-weight: var(--weight-medium);
+    font-size: clamp(1.125rem, 1.5vw + 0.5rem, 1.5rem);
+    line-height: var(--leading-normal);
+    letter-spacing: var(--tracking-info);
+    color: var(--text-secondary);
+  }
+
+  /* Body — 16px, light, wide line-height, body tracking */
+  .type-body {
+    font-family: var(--font-sans);
+    font-weight: var(--weight-light);
+    font-size: clamp(0.875rem, 1vw + 0.25rem, 1rem);  /* 14px → 16px */
+    line-height: var(--leading-relaxed);
+    letter-spacing: var(--tracking-body);
+    color: var(--text-secondary);
+  }
+
+  /* Body info — 16px, normal, info-box tracking */
+  .type-body-info {
+    font-family: var(--font-sans);
+    font-weight: var(--weight-normal);
+    font-size: clamp(0.875rem, 1vw + 0.25rem, 1rem);
+    line-height: 1.5;
+    letter-spacing: var(--tracking-info);
+    color: var(--text-secondary);
+  }
+
+  /* Label — Instrument Sans, 16px bold, wide tracking, capitalize (card headers) */
+  .type-label {
+    font-family: var(--font-display);
+    font-weight: var(--weight-bold);
+    font-size: var(--text-body);
+    line-height: normal;
+    letter-spacing: var(--tracking-wider);
+    text-transform: capitalize;
+    color: var(--text-tertiary);
+  }
+
+  /* Caption — 16px, regular, 0.32 tracking (hypothesis labels, insight labels) */
+  .type-caption {
+    font-family: var(--font-sans);
+    font-weight: var(--weight-normal);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    letter-spacing: var(--tracking-info);
+    color: var(--text-secondary);
+  }
+
+  /* Insight title — Inter, 24px medium */
+  .type-insight-title {
+    font-family: var(--font-alt);
+    font-weight: var(--weight-medium);
+    font-size: clamp(1.125rem, 1.5vw + 0.5rem, 1.5rem);
+    line-height: var(--leading-normal);
+    color: var(--text-primary);
+  }
+}
+
+/* ── Keyframe animations ──────────────────────────────────────
+   Shared animations used across pages.
+   ────────────────────────────────────────────────────────────── */
+@layer base {
   @keyframes pop {
-    0% {
-      transform: scale(0);
-      opacity: 0;
-    }
-    50% {
-      transform: scale(1.1);
-    }
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
+    0%   { transform: scale(0); opacity: 0; }
+    50%  { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
   }
 
   @keyframes fadeIn {
     from { opacity: 0; }
     to   { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 }

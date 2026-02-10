@@ -1,7 +1,12 @@
-import { type ReactNode } from 'react';
+import { type ReactNode, useRef, useEffect, useState } from 'react';
 
 /* ============================================================
    Case Study Primitives — Responsive building blocks
+   ============================================================
+   All primitives consume design tokens from tokens.css via:
+   - CSS custom properties: var(--token-name)
+   - Tailwind utilities mapped in theme.css: text-text-primary, bg-surface-secondary, etc.
+   - Typography utility classes: type-display, type-h2, type-body, type-label, etc.
 
    Layout contract:
      Parent (CaseStudyLayout) provides a snap-y mandatory container.
@@ -22,7 +27,6 @@ function ScrollMouse() {
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
       >
-        {/* Mouse body */}
         <rect
           x="1"
           y="1"
@@ -32,7 +36,6 @@ function ScrollMouse() {
           stroke="currentColor"
           strokeWidth="2"
         />
-        {/* Scroll wheel dot — animated */}
         <circle cx="14" cy="12" r="3" fill="currentColor">
           <animate
             attributeName="cy"
@@ -73,28 +76,28 @@ export function CaseStudyHero({
   heroImageClassName?: string;
 }) {
   return (
-    <section className="w-full min-h-full snap-start snap-always bg-white flex flex-col items-center justify-center px-6 md:px-8 gap-3 md:gap-4 lg:gap-5 py-8">
+    <section className="w-full min-h-full bg-surface-primary flex flex-col items-center px-[var(--content-px)] md:px-[var(--content-px-md)] pt-[15%] pb-[var(--space-4)] gap-2 md:gap-3">
       {/* Logo */}
       <div className="w-40 md:w-52 lg:w-64">{logo}</div>
 
-      {/* Title & subtitle */}
-      <div className="text-center max-w-4xl flex flex-col gap-2">
-        <h1 className="text-lg md:text-xl lg:text-2xl font-light text-black leading-normal">
+      {/* Title & subtitle — Figma: Poppins Light 24px, LH normal, text-black */}
+      <div className="text-center max-w-[var(--content-hero-max-w)] flex flex-col gap-0">
+        <h1 className="type-hero-title">
           {title}
         </h1>
         {subtitle && (
-          <p className="text-lg md:text-xl lg:text-2xl font-light text-black leading-normal">
+          <p className="type-hero-title">
             {subtitle}
           </p>
         )}
       </div>
 
-      {/* Hero image — constrained to fit within the snap page */}
-      <div className={heroImageClassName ?? "w-full max-w-3xl lg:max-w-4xl flex-1 min-h-0 flex items-center"}>
+      {/* Hero image */}
+      <div className={heroImageClassName ?? "w-full max-w-3xl lg:max-w-4xl flex-1 min-h-0 flex items-start mt-[var(--space-4)]"}>
         <img
           src={heroImage}
           alt={heroImageAlt}
-          className="w-full h-auto object-contain rounded-2xl"
+          className="w-full h-auto object-contain rounded-[var(--radius-2xl)]"
         />
       </div>
 
@@ -107,7 +110,7 @@ export function CaseStudyHero({
 // ── Body wrapper (snaps to start, then free-scrolls) ─────────
 export function CaseStudyBody({ children }: { children: ReactNode }) {
   return (
-    <div className="snap-start bg-white [&>*:first-child]:pt-4 [&>*:first-child]:md:pt-6">
+    <div className="bg-surface-primary [&>*:first-child]:pt-[var(--space-1)] [&>*:first-child]:md:pt-[var(--space-6)]">
       {children}
     </div>
   );
@@ -117,7 +120,7 @@ export function CaseStudyBody({ children }: { children: ReactNode }) {
 export function Section({
   children,
   className = '',
-  bg = 'bg-white',
+  bg = 'bg-surface-primary',
 }: {
   children: ReactNode;
   className?: string;
@@ -125,10 +128,10 @@ export function Section({
 }) {
   return (
     <section
-      className={`w-full py-12 md:py-16 lg:py-24 ${bg} ${className}`}
+      className={`w-full py-[var(--section-py)] md:py-[var(--section-py-md)] lg:py-[var(--section-py-lg)] ${bg} ${className}`}
       style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 600px' }}
     >
-      <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-16">
+      <div className="max-w-[var(--content-max-w)] mx-auto px-[var(--content-px)] md:px-[var(--content-px-md)] lg:px-[var(--content-px-lg)]">
         {children}
       </div>
     </section>
@@ -140,18 +143,22 @@ export function SectionTitle({
   title,
   children,
   className = '',
+  titleClassName,
+  bodyClassName,
 }: {
   title: string;
   children?: ReactNode;
   className?: string;
+  titleClassName?: string;
+  bodyClassName?: string;
 }) {
   return (
-    <div className={`flex flex-col gap-4 md:gap-6 mb-8 md:mb-12 ${className}`}>
-      <h2 className="text-2xl md:text-3xl lg:text-[36px] font-light text-[#182730] leading-normal">
+    <div className={`flex flex-col gap-[var(--space-4)] md:gap-[var(--space-6)] mb-[var(--space-8)] md:mb-[var(--space-12)] ${className}`}>
+      <h2 className={titleClassName ?? "type-h2"}>
         {title}
       </h2>
       {children && (
-        <div className="text-sm md:text-base leading-7 tracking-[0.64px] text-[#1e3543]">
+        <div className={bodyClassName ?? "type-body"}>
           {children}
         </div>
       )}
@@ -162,13 +169,13 @@ export function SectionTitle({
 // ── Info-box grid ────────────────────────────────────────────
 export function InfoBoxGrid({ items }: { items: string[] }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[var(--space-3)] md:gap-[var(--space-4)]">
       {items.map((item, i) => (
         <div
           key={i}
-          className="bg-[#f5f5f5] px-4 py-3 md:px-8 md:py-4 flex items-center"
+          className="bg-surface-secondary px-[var(--space-4)] py-[var(--space-3)] md:px-[var(--space-8)] md:py-[var(--space-4)] flex items-center"
         >
-          <p className="text-sm md:text-base leading-6 tracking-[0.32px] text-[#1e3543]">
+          <p className="type-body-info">
             {item}
           </p>
         </div>
@@ -185,30 +192,42 @@ interface Persona {
   quote: string;
 }
 
-export function PersonaCardGrid({ personas }: { personas: Persona[] }) {
+export function PersonaCardGrid({
+  personas,
+  nameClassName,
+  roleClassName,
+  quoteClassName,
+}: {
+  personas: Persona[];
+  nameClassName?: string;
+  roleClassName?: string;
+  quoteClassName?: string;
+}) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-[var(--space-4)] md:gap-[var(--space-6)] lg:gap-[var(--space-8)]">
       {personas.map((p, i) => (
         <div
           key={i}
-          className="bg-[#f5f5f5] flex flex-col items-center gap-6 md:gap-8 p-6 md:p-10 overflow-hidden"
+          className="bg-surface-secondary flex flex-col items-center gap-[var(--space-6)] md:gap-[var(--space-8)] p-[var(--card-px)] md:p-[var(--card-px-md)] overflow-hidden"
         >
-          <div className="flex flex-col items-center gap-3 md:gap-4">
-            <p className="uppercase font-bold text-[#467294] text-sm tracking-[1.6px]">
+          <div className="flex flex-col items-center gap-[var(--space-3)] md:gap-[var(--space-6)]">
+            <p className={nameClassName ?? "type-label"}>
               {p.name}
             </p>
-            <p className="text-lg md:text-xl text-black text-center">
-              {p.role}
-            </p>
+            {p.role && (
+              <p className={roleClassName ?? "type-h2 text-black text-center"}>
+                {p.role}
+              </p>
+            )}
             <img
               src={p.image}
               alt={p.name}
               loading="lazy"
               decoding="async"
-              className="w-24 h-24 md:w-28 md:h-28 rounded-full object-cover"
+              className="w-[var(--avatar-size)] h-[var(--avatar-size)] md:w-[var(--avatar-size-md)] md:h-[var(--avatar-size-md)] rounded-[var(--avatar-radius)] object-cover"
             />
           </div>
-          <p className="font-light text-sm md:text-base leading-7 text-[#1e3543] text-center max-w-xs tracking-[0.64px]">
+          <p className={quoteClassName ?? "type-body text-center max-w-[339px]"}>
             &ldquo;{p.quote}&rdquo;
           </p>
         </div>
@@ -224,6 +243,9 @@ interface HypothesisProps {
   children: ReactNode;
   bullets?: string[];
   whyLabel?: string;
+  titleClassName?: string;
+  bodyClassName?: string;
+  whyLabelClassName?: string;
 }
 
 export function HypothesisBlock({
@@ -232,26 +254,29 @@ export function HypothesisBlock({
   children,
   bullets,
   whyLabel = 'Why it works:',
+  titleClassName,
+  bodyClassName,
+  whyLabelClassName,
 }: HypothesisProps) {
   return (
-    <div className="bg-[#f5f5f5] p-6 md:p-10 lg:p-12 flex flex-col gap-3 md:gap-4">
-      <p className="text-sm md:text-base text-[#1e3543]">Hypothesis {number}</p>
-      <h3 className="text-lg md:text-xl lg:text-2xl font-medium text-[#1e3543] leading-snug">
+    <div className="bg-surface-secondary p-[var(--card-px)] md:p-[var(--card-px-md)] lg:p-[var(--space-12)] flex flex-col gap-[var(--space-3)] md:gap-[var(--space-4)]">
+      <p className="type-caption">Hypothesis {number}</p>
+      <h3 className={titleClassName ?? "type-h3"}>
         {title}
       </h3>
-      <div className="text-sm md:text-base leading-7 text-[#1e3543] tracking-[0.32px]">
+      <div className={bodyClassName ?? "type-body-info"}>
         {children}
       </div>
       {bullets && bullets.length > 0 && (
         <>
-          <p className="font-bold text-sm md:text-base text-[#1e3543]">
+          <p className={whyLabelClassName ?? "type-caption font-[var(--weight-medium)]"}>
             {whyLabel}
           </p>
           <ul className="list-disc pl-5 space-y-1">
             {bullets.map((b, i) => (
               <li
                 key={i}
-                className="text-sm md:text-base leading-6 text-[#1e3543]"
+                className="type-body-info"
               >
                 {b}
               </li>
@@ -267,16 +292,20 @@ export function HypothesisBlock({
 export function InsightBlock({
   label = 'Key insight:',
   children,
+  labelClassName,
+  contentClassName,
 }: {
   label?: string;
   children: ReactNode;
+  labelClassName?: string;
+  contentClassName?: string;
 }) {
   return (
-    <div className="bg-[#f5f5f5] p-6 md:p-10 lg:p-12">
+    <div className="bg-surface-secondary p-[var(--card-px)] md:p-[var(--card-px-md)] lg:p-[var(--space-12)]">
       {label && (
-        <p className="text-sm md:text-base text-[#1e3543] mb-2">{label}</p>
+        <p className={labelClassName ?? "type-caption mb-[var(--space-2)]"}>{label}</p>
       )}
-      <div className="text-sm md:text-base leading-7 text-[#1e3543] tracking-[0.32px]">
+      <div className={contentClassName ?? "type-body-info"}>
         {children}
       </div>
     </div>
@@ -324,7 +353,7 @@ export function FullBleedImage({
 // ── Quote banner ─────────────────────────────────────────────
 export function QuoteBanner({
   children,
-  bg = 'bg-[#f5f5f5]',
+  bg = 'bg-surface-secondary',
   className,
 }: {
   children: ReactNode;
@@ -332,9 +361,9 @@ export function QuoteBanner({
   className?: string;
 }) {
   return (
-    <section className={`w-full py-14 md:py-20 lg:py-28 ${bg}`}>
-      <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-16">
-        <p className={className ?? "text-lg md:text-2xl lg:text-[36px] font-extralight text-center leading-relaxed tracking-[-0.72px] text-black"}>
+    <section className={`w-full py-[var(--space-14)] md:py-[var(--space-20)] lg:py-[var(--space-28)] ${bg}`}>
+      <div className="max-w-[var(--content-max-w)] mx-auto px-[var(--content-px)] md:px-[var(--content-px-md)] lg:px-[var(--content-px-lg)]">
+        <p className={className ?? "type-display text-center text-text-primary"}>
           {children}
         </p>
       </div>
@@ -348,23 +377,29 @@ export function ImageWithQuote({
   alt = '',
   preQuote,
   quote,
+  textColorClass = 'text-text-secondary',
+  preQuoteClassName,
+  quoteClassName,
 }: {
   src: string;
   alt?: string;
   preQuote?: string;
   quote: string;
+  textColorClass?: string;
+  preQuoteClassName?: string;
+  quoteClassName?: string;
 }) {
   return (
     <div className="relative w-full overflow-hidden">
       <img src={src} alt={alt} loading="lazy" decoding="async" className="w-full h-auto object-cover" />
       <div className="absolute inset-0 flex items-center">
-        <div className="ml-auto mr-1 md:mr-12 lg:mr-20 max-w-[38%] md:max-w-sm lg:max-w-md">
+        <div className="ml-auto mr-1 md:mr-[var(--space-12)] lg:mr-[var(--space-20)] max-w-[38%] md:max-w-sm lg:max-w-md">
           {preQuote && (
-            <p className="text-[10px] leading-3 md:text-base md:leading-7 text-[#1e3543] mb-1 md:mb-2 tracking-[0.64px]">
+            <p className={preQuoteClassName ?? `text-[10px] leading-3 md:text-base md:leading-7 ${textColorClass} mb-1 md:mb-[var(--space-2)] tracking-[var(--tracking-body)] font-[var(--weight-light)]`}>
               {preQuote}
             </p>
           )}
-          <p className="text-xs leading-4 md:text-3xl md:leading-snug lg:text-[48px] font-light text-[#1e3543] tracking-[0.48px]">
+          <p className={quoteClassName ?? `text-xs leading-4 md:text-3xl md:leading-snug lg:text-[var(--text-display)] lg:leading-[var(--leading-snug)] font-[var(--weight-light)] ${textColorClass} tracking-[var(--tracking-wide)]`}>
             {quote}
           </p>
         </div>
@@ -377,22 +412,52 @@ export function ImageWithQuote({
 interface SkillCard {
   label: string;
   title: string;
+  description?: string;
 }
 
-export function SkillCardGrid({ cards }: { cards: SkillCard[] }) {
+export function SkillCardGrid({
+  cards,
+  columns = 2,
+}: {
+  cards: SkillCard[];
+  columns?: 2 | 3;
+}) {
+  const hasDescriptions = cards.some((c) => c.description);
+  const colClass =
+    columns === 3
+      ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+      : 'grid-cols-1 sm:grid-cols-2';
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+    <div className={`grid ${colClass} gap-[var(--space-3)] md:gap-[var(--space-4)]`}>
       {cards.map((c, i) => (
         <div
           key={i}
-          className="bg-[#f5f5f5] p-5 md:p-6 flex flex-col gap-2"
+          className={
+            hasDescriptions
+              ? 'bg-surface-secondary p-[var(--space-8)] md:p-[50px] flex flex-col gap-[var(--space-5)] md:gap-[34px]'
+              : 'bg-surface-secondary p-[var(--card-px)] md:px-[50px] md:py-[var(--space-12)] flex flex-col gap-[var(--space-3)] md:gap-[var(--space-5)]'
+          }
         >
-          <p className="text-xs md:text-sm uppercase tracking-wider font-bold text-[#467294]">
+          <p className="type-label">
             {c.label}
           </p>
-          <p className="text-sm md:text-base text-[#1e3543] leading-6">
-            {c.title}
-          </p>
+          {hasDescriptions ? (
+            <>
+              <p className="type-insight-title">
+                {c.title}
+              </p>
+              {c.description && (
+                <p className="type-body-info">
+                  {c.description}
+                </p>
+              )}
+            </>
+          ) : (
+            <p className="type-body">
+              {c.title}
+            </p>
+          )}
         </div>
       ))}
     </div>
@@ -425,7 +490,7 @@ export function ImageGrid({
                 : 'grid-cols-3 sm:grid-cols-4 lg:grid-cols-7';
 
   return (
-    <div className={`grid ${colClass} gap-3 md:gap-4`}>
+    <div className={`grid ${colClass} gap-[var(--space-3)] md:gap-[var(--space-4)]`}>
       {images.map((src, i) => (
         <img
           key={i}
@@ -433,9 +498,54 @@ export function ImageGrid({
           alt={`${alt} ${i + 1}`}
           loading="lazy"
           decoding="async"
-          className="w-full h-auto object-cover rounded-lg"
+          className="w-full h-auto object-cover rounded-[var(--radius-lg)]"
         />
       ))}
+    </div>
+  );
+}
+
+// ── Lazy Video — only loads & plays when visible ─────────────
+export function LazyVideo({
+  src,
+  className = '',
+}: {
+  src: string;
+  className?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref}>
+      {isVisible ? (
+        <video
+          src={src}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className={className}
+        />
+      ) : (
+        <div className={className} />
+      )}
     </div>
   );
 }

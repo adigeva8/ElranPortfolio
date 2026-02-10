@@ -1,3 +1,11 @@
+/* ── Style entry point ─────────────────────────────────────────
+   Import order matters:
+   1. fonts    — Google Font @imports (must be first)
+   2. tailwind — Tailwind v4 base + source scanning
+   3. tokens   — CSS custom properties (design tokens)
+   4. theme    — Tailwind bridge + base layer + utility classes
+   ────────────────────────────────────────────────────────────── */
 @import './fonts.css';
 @import './tailwind.css';
+@import './tokens.css';
 @import './theme.css';

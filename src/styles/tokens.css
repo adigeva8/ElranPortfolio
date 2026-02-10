@@ -1,0 +1,207 @@
+/* ================================================================
+   Design Tokens — Single Source of Truth
+   ================================================================
+   Extracted from Figma: Design-to-adi (uTyzNOimrajFLMt3toEDqY)
+
+   Naming convention:
+     --<category>-<variant>
+     e.g. --color-gray-50, --text-primary, --space-4
+
+   Usage:
+     In CSS  → var(--text-primary)
+     In TW   → text-text-primary  (via @theme inline bridge in theme.css)
+   ================================================================ */
+
+:root {
+  /* ── Color Primitives ─────────────────────────────────────── */
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* Neutral / Gray (mapped to portfolio palette) */
+  --color-gray-50:  #f5f5f5;
+  --color-gray-100: #e5e5e5;
+  --color-gray-200: #d6d6d6;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #d0d0d1;
+  --color-gray-500: #9ca3af;
+  --color-gray-600: #66697b;
+  --color-gray-700: #1e3543;
+  --color-gray-900: #182730;
+
+  /* Blue (brand + accent) */
+  --color-blue-400: #467294;
+  --color-blue-500: #377ef9;
+  --color-blue-600: #0023a3;
+  --color-blue-700: #001a80;
+  --color-blue-gradient: #a8c5ff;
+
+  /* Accent (case-study specific) */
+  --color-teal-500: #14af9c;
+  --color-pink-500: #ff00cc;
+
+  /* ── Semantic Color Tokens ────────────────────────────────── */
+
+  /* Text */
+  --text-primary:   var(--color-gray-900);  /* #182730 — headings, titles */
+  --text-secondary: var(--color-gray-700);  /* #1e3543 — body, captions  */
+  --text-tertiary:  var(--color-blue-400);  /* #467294 — labels, accents */
+  --text-inverse:   var(--color-white);
+  --text-on-dark:   var(--color-white);
+
+  /* Surface / Background */
+  --surface-primary:   var(--color-white);
+  --surface-secondary: var(--color-gray-50);  /* #f5f5f5 */
+  --surface-dark:      var(--color-black);
+
+  /* Border */
+  --border-default: rgba(0, 0, 0, 0.1);
+  --border-subtle:  var(--color-gray-200);   /* #d6d6d6 */
+  --border-muted:   var(--color-gray-100);   /* gray-100 for layout */
+
+  /* Brand */
+  --brand:       var(--color-blue-600);
+  --brand-hover: var(--color-blue-700);
+  --accent:      var(--color-blue-400);
+
+  /* Ring / Focus */
+  --ring: var(--brand);
+
+  /* ── Typography ───────────────────────────────────────────── */
+
+  /* Font families (loaded in fonts.css) */
+  --font-sans:    'Poppins', sans-serif;
+  --font-display: 'Instrument Sans', sans-serif;
+  --font-alt:     'Inter', sans-serif;
+
+  /* Type scale — desktop sizes (mobile handled by responsive TW classes) */
+  --text-display: 48px;   /* Quote banners, hero impact text     */
+  --text-h1:      36px;   /* Main headline (rare, e.g. Outcome)  */
+  --text-h2:      24px;   /* Section headings                    */
+  --text-h3:      24px;   /* Sub-headings, hypothesis titles       */
+  --text-body:    16px;   /* Running text                         */
+  --text-sm:      14px;   /* Mobile body, small text              */
+  --text-xs:      12px;   /* Micro text, mobile quotes            */
+
+  /* Line heights */
+  --leading-none:    1;
+  --leading-tight:   1.15;
+  --leading-snug:    1.35;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.75;
+
+  /* Letter spacing */
+  --tracking-tight:  -0.72px;  /* hero headline          */
+  --tracking-normal:  0;
+  --tracking-body:    0.64px;  /* running text            */
+  --tracking-info:    0.32px;  /* info boxes              */
+  --tracking-wide:    0.48px;  /* display / quotes        */
+  --tracking-wider:   1.6px;   /* labels, card headers    */
+
+  /* Font weights */
+  --weight-thin:       100;
+  --weight-extralight: 200;
+  --weight-light:      300;
+  --weight-normal:     400;
+  --weight-medium:     500;
+  --weight-semibold:   600;
+  --weight-bold:       700;
+  --weight-black:      900;
+
+  /* ── Spacing (4px grid) ───────────────────────────────────── */
+
+  --space-0:   0;
+  --space-px:  1px;
+  --space-0-5: 2px;
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-5:   20px;
+  --space-6:   24px;
+  --space-8:   32px;
+  --space-10:  40px;
+  --space-12:  48px;
+  --space-14:  56px;
+  --space-16:  64px;
+  --space-20:  80px;
+  --space-24:  96px;
+  --space-28: 112px;
+
+  /* ── Layout ───────────────────────────────────────────────── */
+
+  --content-max-w:      64rem;   /* 1024px — max-w-5xl   */
+  --content-wide-max-w: 105rem;  /* 1680px               */
+  --content-hero-max-w: 56rem;   /* 896px  — max-w-4xl   */
+
+  --content-px:    var(--space-6);   /* 24px  mobile  */
+  --content-px-md: var(--space-8);   /* 32px  tablet  */
+  --content-px-lg: var(--space-16);  /* 64px  desktop */
+
+  --section-py:    var(--space-12);  /* 48px  mobile  */
+  --section-py-md: var(--space-16);  /* 64px  tablet  */
+  --section-py-lg: var(--space-24);  /* 96px  desktop */
+
+  /* ── Radii ────────────────────────────────────────────────── */
+
+  --radius-none: 0;
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-2xl:  20px;
+  --radius-full: 9999px;
+
+  /* ── Shadows ──────────────────────────────────────────────── */
+
+  --shadow-none: none;
+  --shadow-sm:   0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md:   0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15);
+  --shadow-lg:   0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+  /* ── Z-index ──────────────────────────────────────────────── */
+
+  --z-base:     0;
+  --z-dropdown: 10;
+  --z-sticky:   20;
+  --z-header:   50;
+  --z-overlay:  100;
+  --z-modal:    200;
+
+  /* ── Transitions ──────────────────────────────────────────── */
+
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-in:      cubic-bezier(0.4, 0, 1, 1);
+  --ease-out:     cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out:  cubic-bezier(0.4, 0, 0.2, 1);
+
+  --duration-fast:   150ms;
+  --duration-normal: 300ms;
+  --duration-slow:   500ms;
+  --duration-slower: 800ms;
+
+  /* ── Component: Button ────────────────────────────────────── */
+
+  --button-height:  57px;
+  --button-px:      var(--space-8);
+  --button-radius:  var(--radius-md);
+  --button-bg:      var(--brand);
+  --button-bg-hover: var(--brand-hover);
+  --button-text:    var(--color-white);
+  --button-font-size: var(--text-body);
+
+  /* ── Component: Card ──────────────────────────────────────── */
+
+  --card-bg:      var(--surface-secondary);
+  --card-px:      var(--space-6);
+  --card-px-md:   var(--space-10);
+  --card-py:      var(--space-6);
+  --card-py-md:   var(--space-10);
+  --card-radius:  0;   /* case study cards are sharp-cornered */
+
+  /* ── Component: Avatar ────────────────────────────────────── */
+
+  --avatar-size:    96px;   /* mobile */
+  --avatar-size-md: 122px;  /* desktop (Figma spec) */
+  --avatar-radius:  var(--radius-full);
+}
