@@ -1,325 +1,612 @@
-/* ── Persona avatars ── */
-import imgPersonaJason from 'figma:asset/f27516176db855022a449d2660e3b43e34d07bf8.png';
-import imgPersonaEmily from 'figma:asset/b551caf1a50da17c794f41c2b771e5502c81c73e.png';
-import imgPersonaOlivia from 'figma:asset/d0400c167c2b5599f72e19a01b70f51fb477fb65.png';
-import imgPersonaDaniel from 'figma:asset/67b4aa35e2f440f63931e72e888327a387bbbe47.png';
+import { type ReactNode } from 'react';
+import { motion } from 'motion/react';
+import {
+  ArrowRight,
+  DollarSign,
+  Users,
+  ShieldCheck,
+  BarChart3,
+  Brain,
+  FlaskConical,
+  Layers,
+  MessageSquare,
+  Target,
+  Repeat,
+  TrendingUp,
+} from 'lucide-react';
 
-/* ── Hero ── */
-import imgChatGptImageFeb52026063301Pm1 from 'figma:asset/88da6de6a1b666a471ee6930a733125a1b7e710e.png';
-
-/* ── Onboarding screens ── */
+/* ── Existing images ─────────────────────────────────────────── */
+import imgHero from 'figma:asset/88da6de6a1b666a471ee6930a733125a1b7e710e.png';
 import imgImage184 from 'figma:asset/07a42507cb22cafb6d39b51c9254b4d2088abbb3.png';
 import imgImage185 from 'figma:asset/0951004d47003d3e5824dd6b6ee4a2a692f1c14f.png';
 import imgImage186 from 'figma:asset/37c8c497c64b1de3f237409d508123bfd7436060.png';
 import imgImage187 from 'figma:asset/f3148055a59a7b55f2acac8549dd0c0e7c37cac9.png';
-import imgImage188 from 'figma:asset/04f3980e2187e4fb278f0a8265c12d38813fc065.png';
-
-/* ── Dashboard screens (new full-width images) ── */
 import imgDash216 from 'figma:asset/13fc9b9e5c9377cfe6a401b34f701652c82b98ec.png';
 import imgDash217 from 'figma:asset/28aa4fa845afbbe3f48e5a21092fd68ea973afb8.png';
 import imgDash218 from 'figma:asset/7a6b7e244b5fadc023b3ea45934532d38efdffb1.png';
 import imgDash219 from 'figma:asset/f0d3902cc9f674d2fe46bfca159e4323568fd012.png';
-
-/* ── Mobile app screens ── */
-import imgBitmap8 from 'figma:asset/a37a41cda8ef0c22ecb82a85fdcba7051dbf554a.png';
-import imgBitmap9 from 'figma:asset/2805b683f16274606e9e32d658122138e42b2aee.png';
-import imgBitmap10 from 'figma:asset/b52e381d1b22234a4c307574ab00c59247e781a6.png';
-import imgBitmap11 from 'figma:asset/83e160d336cf76eea4aa1619a24dc7300a3a6c28.png';
-import imgBitmap12 from 'figma:asset/53c05c1be4462113e764aa95fb7e33fcb398f036.png';
-import imgBitmap13 from 'figma:asset/d959283b2c50d7097e3cd5768578fbf8db2e9c9a.png';
-import imgBitmap14 from 'figma:asset/10de026a1d74bca1f10e8361c239adfb96149d5c.png';
-import imgBitmap15 from 'figma:asset/0f1e3edf99b5e603e7f703697ff0be16c8a54f99.png';
-import imgBitmap16 from 'figma:asset/5b9c9a4703745bbc2e0d08a2aabdd1350adcf0db.png';
-import imgBitmap17 from 'figma:asset/90cf02f5ed4d1aa6db3603c7ceeda8b714cf8e54.png';
-import imgBitmap18 from 'figma:asset/16d08698084d1f89eaa9380a2b77ecfc126e406f.png';
-import imgBitmap19 from 'figma:asset/61927fc5c0ba765d0b0f702a42c55017c556c82b.png';
-
-/* ── Design System ── */
-import imgDesignSystem1 from 'figma:asset/1a677e3eb4dc173bbc95d4d11aea52db31f5e306.png';
-import imgDesignSystem2 from 'figma:asset/533b4e1dcf537155dc3e0e4bbc8d68f2b6f1898e.png';
-
-/* ── Footer ── */
 import imgImage194 from 'figma:asset/3fa38104c924f2cbe993eee7323661a3891a0092.png';
 
-import {
-  Section,
-  SectionTitle,
-  PersonaCardGrid,
-  InsightBlock,
-  QuoteBanner,
-  ImageWithQuote,
-  CaseStudyHero,
-  CaseStudyBody,
-  ImageGrid,
-  ImageCarousel,
-} from '@/app/components/case-study/CaseStudyPrimitives';
-
-/* ── Bluevine Logo (text placeholder) ── */
-function BluevineLogo() {
+/* ── Scroll-triggered animation ──────────────────────────────── */
+function Reveal({
+  children,
+  className = '',
+  delay = 0,
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+}) {
   return (
-    <p className="text-3xl md:text-4xl font-bold text-bluevine tracking-tight w-full text-center">
-      bluevine
-    </p>
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.7, delay, ease: 'easeOut' }}
+    >
+      {children}
+    </motion.div>
   );
 }
 
-/* ============================================================
-   BLUEVINE CASE STUDY — Responsive Rewrite
-   ============================================================ */
+/* ── Centered vertical line divider ──────────────────────────── */
+function VerticalDivider() {
+  return (
+    <div className="flex justify-center py-8 md:py-10">
+      <div className="w-px h-12 md:h-16" style={{ backgroundColor: 'var(--text-primary)' }} />
+    </div>
+  );
+}
 
+/* ── Bold centered section heading ───────────────────────────── */
+function SectionHeading({ children }: { children: ReactNode }) {
+  return (
+    <h2
+      className="text-2xl md:text-3xl lg:text-[34px] font-semibold text-center mb-10 md:mb-14"
+      style={{ color: 'var(--text-primary)' }}
+    >
+      {children}
+    </h2>
+  );
+}
+
+/* ── Icon row ────────────────────────────────────────────────── */
+function IconRow({
+  icons,
+}: {
+  icons: { icon: ReactNode; label?: string }[];
+}) {
+  return (
+    <div className="flex items-center justify-center gap-10 md:gap-16 mb-8 md:mb-10">
+      {icons.map((item, i) => (
+        <div key={i} className="flex flex-col items-center gap-2">
+          <div style={{ color: 'var(--text-primary)' }}>{item.icon}</div>
+          {item.label && (
+            <p className="text-[10px] uppercase tracking-wider text-center" style={{ color: 'var(--text-tertiary)' }}>
+              {item.label}
+            </p>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ── KPI / Impact callout card ───────────────────────────────── */
+function KpiCard({
+  label,
+  children,
+}: {
+  label: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="max-w-xl mx-auto">
+      <div
+        className="relative overflow-hidden rounded-2xl px-8 py-10 md:px-12 md:py-12 text-center"
+        style={{ backgroundColor: '#e8eeff' }}
+      >
+        <div className="absolute -left-4 -top-4 opacity-[0.08]">
+          <TrendingUp className="w-32 h-32" strokeWidth={1.2} style={{ color: 'var(--brand)' }} />
+        </div>
+        <p
+          className="text-[11px] uppercase tracking-[0.25em] mb-4 relative"
+          style={{ color: 'var(--text-tertiary)' }}
+        >
+          {label}
+        </p>
+        <div className="relative">{children}</div>
+      </div>
+    </div>
+  );
+}
+
+/* ================================================================
+   BLUEVINE CASE STUDY
+   ================================================================ */
 export default function CaseStutyBluevineConent() {
   return (
-    <>
-      {/* ── 1. Hero ─────────────────────────────────────── */}
-      <CaseStudyHero
-        logo={<BluevineLogo />}
-        title="Redesigning lending and banking for Bluevine means turning complex, high-risk financial moments into fast, clear, and confidence-driven decisions for businesses."
-        heroImage={imgChatGptImageFeb52026063301Pm1}
-        heroImageAlt="Bluevine banking experience"
-        heroImageClassName="w-full max-w-3xl lg:max-w-4xl flex items-center [&>img]:max-h-[40vh]"
-      />
+    <div className="bg-white">
+      {/* ═══════════════════════════════════════════════════════
+          HERO / TITLE
+          ═══════════════════════════════════════════════════════ */}
+      <section className="pt-24 md:pt-32 lg:pt-40 pb-6 md:pb-8 px-6 md:px-12 lg:px-16">
+        <div className="max-w-4xl mx-auto text-center">
+          <Reveal>
+            <p
+              className="text-xs uppercase tracking-[0.3em] mb-6"
+              style={{ color: 'var(--text-tertiary)' }}
+            >
+              BlueVine
+            </p>
+          </Reveal>
 
-      <CaseStudyBody>
-      {/* ── 2. The Challenge (body weight 400 — Figma exception) ── */}
-      <Section>
-        <SectionTitle title="The Challenge">
-          <p>
-            Designing a new lending and banking experience for Bluevine is about
-            removing complexity from financially sensitive moments and replacing
-            it with clarity, speed, and confidence. The goal is to transform
-            traditionally heavy processes into simple, guided decisions that
-            businesses can trust instantly&mdash;so managing money feels
-            controlled, predictable, and effortlessly actionable.
-          </p>
-        </SectionTitle>
-      </Section>
+          <Reveal delay={0.1}>
+            <h1
+              className="text-3xl md:text-4xl lg:text-5xl font-semibold leading-[1.12] mb-6"
+              style={{ color: 'var(--text-primary)' }}
+            >
+              Driving monetization and activation in SMB fintech
+            </h1>
+          </Reveal>
 
-      {/* ── 3. Understanding Pain Points ────────────────── */}
-      <Section>
-        <SectionTitle
-          title="Understanding the Real Financial Pain Behind Small Business Decisions"
-          bodyClassName="type-body"
-        >
-          <p>
-            Before designing solutions, I needed to deeply understand where
-            business owners feel unsupported, stressed, or forced to make risky
-            financial decisions. By uncovering these pain points, I could focus
-            the experience on reducing uncertainty, increasing control, and
-            building real financial confidence.
-          </p>
-        </SectionTitle>
+          <Reveal delay={0.15}>
+            <p
+              className="text-base md:text-lg font-light italic max-w-2xl mx-auto"
+              style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-secondary)' }}
+            >
+              Turning complex financial decisions into confident actions
+            </p>
+          </Reveal>
 
-        <PersonaCardGrid
-          personas={[
-            {
-              name: 'Jason Miller',
-              role: 'Owner, Neighborhood Auto Repair',
-              image: imgPersonaJason,
-              quote:
-                'Running payroll, paying suppliers, and managing cash flow felt like guessing. Without real banking support, every month felt like I was one mistake away from falling behind.',
-            },
-            {
-              name: 'Emily Carter',
-              role: 'Founder, Boutique Marketing Studio',
-              image: imgPersonaEmily,
-              quote:
-                'I had revenue coming in, but no guidance on how to manage it. I needed a bank that understood business timing - not just balances.',
-            },
-            {
-              name: 'Olivia Bennett',
-              role: 'Owner, Online Home Decor Store',
-              image: imgPersonaOlivia,
-              quote:
-                "I wasn't looking for loans all the time - I wanted confidence. Tools, insights, and support that help me plan, not just react.",
-            },
-            {
-              name: 'Daniel Brooks',
-              role: 'Co-Owner, Local Food Distribution Company',
-              image: imgPersonaDaniel,
-              quote:
-                'When inventory costs changed, I had nowhere to turn for fast financial help. Traditional banks were too slow for real business decisions.',
-            },
-          ]}
-          nameClassName="type-label"
-          roleClassName="type-h2 text-text-primary text-center"
-        />
-      </Section>
-
-      {/* ── 4. Key Insights ─────────────────────────────── */}
-      <Section>
-        <SectionTitle title="Turning User Pain Into Product Direction" bodyClassName="type-body">
-          <p>
-            Before designing solutions, I needed to deeply understand where
-            business owners feel unsupported, stressed, or forced to make risky
-            financial decisions. By uncovering these pain points, I could focus
-            the experience on reducing uncertainty, increasing control, and
-            building real financial confidence.
-          </p>
-        </SectionTitle>
-
-        <div className="flex flex-col gap-[var(--space-4)] md:gap-[var(--space-6)]">
-          <InsightBlock label="Key insight 1:" labelClassName="type-caption" contentClassName="type-body-info">
-            <p className="type-insight-title mb-2">
-              Speed equals survival
-            </p>
-            <p>
-              When cash flow decisions take days, businesses already lose
-              opportunities or fall behind on obligations.
-            </p>
-          </InsightBlock>
-
-          <InsightBlock label="Key insight 2:" labelClassName="type-caption" contentClassName="type-body-info">
-            <p className="type-insight-title mb-2">
-              Uncertainty is more stressful than cost
-            </p>
-            <p>
-              Not knowing if or when funds will be available creates more
-              anxiety than interest rates or fees.
-            </p>
-          </InsightBlock>
-
-          <InsightBlock label="Key insight 3:" labelClassName="type-caption" contentClassName="type-body-info">
-            <p className="type-insight-title mb-2">
-              Business context is missing in traditional banking
-            </p>
-            <p>
-              Small businesses need tools that understand revenue cycles,
-              seasonality, and supplier timing.
-            </p>
-          </InsightBlock>
-
-          <InsightBlock label="Key insight 4:" labelClassName="type-caption" contentClassName="type-body-info">
-            <p className="type-insight-title mb-2">
-              Decision confidence is a product feature
-            </p>
-            <p>
-              Clear status, predictable outcomes, and transparent requirements
-              matter as much as approval itself.
-            </p>
-          </InsightBlock>
-
-          <InsightBlock label="Key insight 5:" labelClassName="type-caption" contentClassName="type-body-info">
-            <p className="type-insight-title mb-2">
-              Owners don&rsquo;t want &ldquo;more banking,&rdquo; they want
-              control
-            </p>
-            <p>
-              The goal isn&rsquo;t more features &mdash; it&rsquo;s fewer
-              unknowns and faster, safer actions.
-            </p>
-          </InsightBlock>
+          {/* Metadata bar */}
+          <Reveal delay={0.25}>
+            <div
+              className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mt-10 pt-8 text-left"
+              style={{ borderTop: '1px solid var(--border-subtle)' }}
+            >
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.15em] mb-2" style={{ color: 'var(--text-tertiary)' }}>
+                  Role
+                </p>
+                <p className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>
+                  Senior Product Designer
+                </p>
+              </div>
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.15em] mb-2" style={{ color: 'var(--text-tertiary)' }}>
+                  Team
+                </p>
+                <p className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>
+                  PM · Engineering · Data
+                </p>
+              </div>
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.15em] mb-2" style={{ color: 'var(--text-tertiary)' }}>
+                  Scope
+                </p>
+                <p className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>
+                  Registration, plan selection, upgrade flows
+                </p>
+              </div>
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.15em] mb-2" style={{ color: 'var(--text-tertiary)' }}>
+                  Impact
+                </p>
+                <p className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>
+                  +7% registration-to-plan conversion
+                </p>
+              </div>
+            </div>
+          </Reveal>
         </div>
-      </Section>
+      </section>
 
-      {/* ── 5. Onboarding ─────────────────────────────────── */}
-      <Section>
-        <SectionTitle title="Fast, Frictionless Onboarding" bodyClassName="type-body">
-          <p>
-            Getting started should feel as simple as running your business. The
-            onboarding process is designed to minimize steps, reduce manual
-            input, and guide users clearly from signup to account
-            readiness&mdash;so they can open an account in minutes, not days.
-          </p>
-        </SectionTitle>
+      {/* Hero image */}
+      <Reveal>
+        <div className="max-w-6xl mx-auto px-6 md:px-12 pb-4">
+          <img
+            src={imgHero}
+            alt="BlueVine banking experience"
+            className="w-full h-auto rounded-xl"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+      </Reveal>
 
-        <ImageCarousel
-          images={[imgImage184, imgImage185, imgImage186, imgImage187, imgImage188]}
-          alt="Onboarding step"
-          autoPlayMs={4000}
+      {/* ─── DIVIDER ─────────────────────────────────────────── */}
+      <VerticalDivider />
+
+      {/* ═══════════════════════════════════════════════════════
+          THE PROBLEM — with icons
+          ═══════════════════════════════════════════════════════ */}
+      <section className="pb-12 md:pb-16 px-6 md:px-12 lg:px-16">
+        <div className="max-w-4xl mx-auto">
+          <Reveal>
+            <IconRow
+              icons={[
+                { icon: <DollarSign className="w-10 h-10 md:w-12 md:h-12" strokeWidth={1.3} />, label: 'Complexity' },
+                { icon: <Users className="w-10 h-10 md:w-12 md:h-12" strokeWidth={1.3} />, label: 'Personas' },
+                { icon: <ShieldCheck className="w-10 h-10 md:w-12 md:h-12" strokeWidth={1.3} />, label: 'Sensitivity' },
+              ]}
+            />
+          </Reveal>
+
+          <Reveal>
+            <SectionHeading>The Problem</SectionHeading>
+          </Reveal>
+
+          <Reveal delay={0.1}>
+            <h3
+              className="text-lg md:text-xl font-semibold text-center mb-6 max-w-2xl mx-auto leading-snug"
+              style={{ color: 'var(--text-primary)' }}
+            >
+              SMB users hesitated to upgrade due to unclear value differentiation
+            </h3>
+          </Reveal>
+
+          <Reveal delay={0.15}>
+            <p className="text-sm md:text-base font-light text-center mb-6 max-w-2xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
+              Challenges:
+            </p>
+
+            <div className="flex flex-col gap-3.5 max-w-lg mx-auto">
+              {[
+                'Financial product complexity',
+                'Different SMB personas',
+                'High sensitivity around financial decisions',
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <span
+                    className="w-1.5 h-1.5 rounded-full mt-[7px] flex-shrink-0"
+                    style={{ backgroundColor: 'var(--text-tertiary)' }}
+                  />
+                  <p className="text-sm md:text-base font-light" style={{ color: 'var(--text-primary)' }}>
+                    {item}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ─── DIVIDER ─────────────────────────────────────────── */}
+      <VerticalDivider />
+
+      {/* ═══════════════════════════════════════════════════════
+          KPI / IMPACT CARD
+          ═══════════════════════════════════════════════════════ */}
+      <section className="pb-4 px-6 md:px-12 lg:px-16">
+        <Reveal>
+          <KpiCard label="Main Impact">
+            <p className="text-lg md:text-xl font-semibold leading-snug" style={{ color: 'var(--text-primary)' }}>
+              +7% registration-to-plan conversion
+              <br />
+              Improved upgrade clarity
+            </p>
+          </KpiCard>
+        </Reveal>
+      </section>
+
+      {/* ─── DIVIDER ─────────────────────────────────────────── */}
+      <VerticalDivider />
+
+      {/* ═══════════════════════════════════════════════════════
+          MY OWNERSHIP
+          ═══════════════════════════════════════════════════════ */}
+      <section className="pb-12 md:pb-16 px-6 md:px-12 lg:px-16">
+        <div className="max-w-4xl mx-auto">
+          <Reveal>
+            <IconRow
+              icons={[
+                { icon: <BarChart3 className="w-10 h-10 md:w-12 md:h-12" strokeWidth={1.3} />, label: 'Monetization' },
+                { icon: <Brain className="w-10 h-10 md:w-12 md:h-12" strokeWidth={1.3} />, label: 'Decision Logic' },
+                { icon: <FlaskConical className="w-10 h-10 md:w-12 md:h-12" strokeWidth={1.3} />, label: 'Experiments' },
+              ]}
+            />
+          </Reveal>
+
+          <Reveal>
+            <SectionHeading>My Ownership</SectionHeading>
+          </Reveal>
+
+          <Reveal delay={0.1}>
+            <div className="flex flex-col gap-4 max-w-xl mx-auto">
+              {[
+                'Led monetization and upgrade flow redesign',
+                'Designed decision-based plan logic',
+                'Partnered with Data for behavioral insights',
+                'Operated within experiment-driven squad',
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <span
+                    className="w-1.5 h-1.5 rounded-full mt-[7px] flex-shrink-0"
+                    style={{ backgroundColor: 'var(--text-tertiary)' }}
+                  />
+                  <p className="text-sm md:text-base font-light" style={{ color: 'var(--text-primary)' }}>
+                    {item}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ─── DIVIDER ─────────────────────────────────────────── */}
+      <VerticalDivider />
+
+      {/* ═══════════════════════════════════════════════════════
+          KEY INSIGHT — Dramatic full-width accent band
+          ═══════════════════════════════════════════════════════ */}
+      <section
+        className="py-24 md:py-36 px-6 md:px-12"
+        style={{ backgroundColor: 'var(--color-gray-900)' }}
+      >
+        <div className="max-w-3xl mx-auto text-center">
+          <Reveal>
+            <p className="text-[11px] uppercase tracking-[0.3em] mb-10" style={{ color: 'rgba(255,255,255,0.4)' }}>
+              Key Insight
+            </p>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="text-2xl md:text-4xl lg:text-5xl font-semibold leading-tight text-white mb-3">
+              Financial users require clarity
+            </p>
+            <p
+              className="text-2xl md:text-4xl lg:text-5xl font-semibold leading-tight text-white italic"
+              style={{ fontFamily: 'var(--font-serif)' }}
+            >
+              before commitment.
+            </p>
+          </Reveal>
+          <Reveal delay={0.2}>
+            <p className="mt-10 text-sm md:text-base font-light max-w-lg mx-auto" style={{ color: 'rgba(255,255,255,0.55)' }}>
+              Decision support increased confidence.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ─── DIVIDER ─────────────────────────────────────────── */}
+      <VerticalDivider />
+
+      {/* ═══════════════════════════════════════════════════════
+          THE APPROACH — numbered cards with icons
+          ═══════════════════════════════════════════════════════ */}
+      <section className="pb-12 md:pb-16 px-6 md:px-12 lg:px-16">
+        <div className="max-w-4xl mx-auto">
+          <Reveal>
+            <SectionHeading>The Approach</SectionHeading>
+          </Reveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {[
+              {
+                num: '01',
+                text: 'Simplify plan differentiation',
+                icon: <Layers className="w-7 h-7" strokeWidth={1.4} />,
+              },
+              {
+                num: '02',
+                text: 'Add contextual guidance during selection',
+                icon: <MessageSquare className="w-7 h-7" strokeWidth={1.4} />,
+              },
+              {
+                num: '03',
+                text: 'Clarify benefits tied to user behavior',
+                icon: <Target className="w-7 h-7" strokeWidth={1.4} />,
+              },
+              {
+                num: '04',
+                text: 'Iterate through experimentation',
+                icon: <Repeat className="w-7 h-7" strokeWidth={1.4} />,
+              },
+            ].map((step, i) => (
+              <Reveal key={i} delay={i * 0.08}>
+                <div
+                  className="p-6 md:p-8 rounded-xl h-full"
+                  style={{ backgroundColor: 'var(--surface-secondary)' }}
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <p
+                      className="text-2xl md:text-3xl font-semibold"
+                      style={{ color: 'var(--text-tertiary)' }}
+                    >
+                      {step.num}
+                    </p>
+                    <div style={{ color: 'var(--text-tertiary)' }}>{step.icon}</div>
+                  </div>
+                  <p className="text-sm md:text-base font-light leading-relaxed" style={{ color: 'var(--text-primary)' }}>
+                    {step.text}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── DIVIDER ─────────────────────────────────────────── */}
+      <VerticalDivider />
+
+      {/* ═══════════════════════════════════════════════════════
+          DESIGN VISUALS — Onboarding & Dashboard
+          ═══════════════════════════════════════════════════════ */}
+      <section className="pb-8 md:pb-12 px-6 md:px-12">
+        <div className="max-w-6xl mx-auto">
+          {/* Onboarding screens */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mb-5">
+            {[imgImage184, imgImage185, imgImage186, imgImage187].map((src, i) => (
+              <Reveal key={i} delay={i * 0.08}>
+                <img
+                  src={src}
+                  alt={`Onboarding step ${i + 1}`}
+                  className="w-full h-auto rounded-xl"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </Reveal>
+            ))}
+          </div>
+
+          {/* Dashboard screens */}
+          <Reveal>
+            <img
+              src={imgDash216}
+              alt="BlueVine dashboard"
+              className="w-full h-auto rounded-xl mb-5"
+              loading="lazy"
+              decoding="async"
+            />
+          </Reveal>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <Reveal delay={0.08}>
+              <img
+                src={imgDash217}
+                alt="Dashboard payments"
+                className="w-full h-auto rounded-xl"
+                loading="lazy"
+                decoding="async"
+              />
+            </Reveal>
+            <Reveal delay={0.16}>
+              <img
+                src={imgDash218}
+                alt="Dashboard analytics"
+                className="w-full h-auto rounded-xl"
+                loading="lazy"
+                decoding="async"
+              />
+            </Reveal>
+          </div>
+          <Reveal className="mt-5">
+            <img
+              src={imgDash219}
+              alt="Dashboard credit"
+              className="w-full h-auto rounded-xl"
+              loading="lazy"
+              decoding="async"
+            />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ─── DIVIDER ─────────────────────────────────────────── */}
+      <VerticalDivider />
+
+      {/* ═══════════════════════════════════════════════════════
+          RESULTS — Full-width dark accent band
+          ═══════════════════════════════════════════════════════ */}
+      <section
+        className="py-24 md:py-36 px-6 md:px-12 lg:px-16"
+        style={{ backgroundColor: 'var(--color-gray-900)' }}
+      >
+        <div className="max-w-4xl mx-auto text-center">
+          <Reveal>
+            <p className="text-[11px] uppercase tracking-[0.3em] mb-4" style={{ color: 'rgba(255,255,255,0.4)' }}>
+              Results
+            </p>
+            <h2 className="text-2xl md:text-3xl font-semibold text-white mb-16">
+              Measurable impact on monetization
+            </h2>
+          </Reveal>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 md:gap-16 text-center">
+            <Reveal delay={0.08}>
+              <div>
+                <p className="text-5xl md:text-6xl lg:text-7xl font-semibold text-white mb-3">
+                  +7%
+                </p>
+                <p className="text-sm font-light" style={{ color: 'rgba(255,255,255,0.55)' }}>
+                  improvement in registration-to-plan conversion
+                </p>
+              </div>
+            </Reveal>
+            <Reveal delay={0.16}>
+              <div>
+                <p
+                  className="text-4xl md:text-5xl lg:text-6xl font-semibold mb-3"
+                  style={{ color: 'rgba(255,255,255,0.7)' }}
+                >
+                  &uarr;
+                </p>
+                <p className="text-sm font-light" style={{ color: 'rgba(255,255,255,0.55)' }}>
+                  Improved upgrade clarity
+                </p>
+              </div>
+            </Reveal>
+            <Reveal delay={0.24}>
+              <div>
+                <p
+                  className="text-4xl md:text-5xl lg:text-6xl font-semibold mb-3"
+                  style={{ color: 'rgba(255,255,255,0.7)' }}
+                >
+                  &darr;
+                </p>
+                <p className="text-sm font-light" style={{ color: 'rgba(255,255,255,0.55)' }}>
+                  Reduced hesitation during plan selection
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════
+          CLOSING IMAGE
+          ═══════════════════════════════════════════════════════ */}
+      <div className="relative w-full overflow-hidden">
+        <img
+          src={imgImage194}
+          alt="BlueVine — clarity before commitment"
+          loading="lazy"
+          decoding="async"
+          className="w-full h-auto object-cover"
         />
-      </Section>
-
-      {/* ── 6. Dashboard ────────────────────────────────── */}
-      <Section>
-        <SectionTitle title="From Setup to Full Financial Control" bodyClassName="type-body">
-          <p>
-            Once onboarding is complete, the dashboard becomes the
-            business&rsquo;s financial command center. Every critical action
-            &mdash; cash visibility, payments, transfers, credit access, and
-            reporting &mdash; is designed to be immediate, clear, and
-            actionable. Instead of searching for information or waiting on
-            support, business owners can monitor performance, move money, and
-            make confident decisions in real time.
-          </p>
-        </SectionTitle>
-      </Section>
-
-      <div className="max-w-[1331px] mx-auto px-[var(--content-px)] md:px-[var(--content-px-md)] lg:px-[var(--space-12)] pb-[var(--space-12)] md:pb-[var(--space-16)]">
-        <ImageCarousel
-          images={[imgDash216, imgDash217, imgDash218, imgDash219]}
-          alt="Dashboard screen"
-          autoPlayMs={4000}
-        />
+        <div className="absolute inset-0 flex items-center">
+          <div className="ml-auto mr-4 md:mr-12 lg:mr-20 max-w-[40%] md:max-w-sm lg:max-w-md">
+            <p className="text-[10px] leading-3 md:text-base md:leading-7 mb-1 md:mb-2 text-white font-light tracking-wide">
+              &ldquo;When users clearly understand what will happen next, it makes them:
+            </p>
+            <p className="text-xs leading-4 md:text-3xl md:leading-snug lg:text-[48px] lg:leading-snug text-white font-light tracking-wide">
+              move faster, decide better, and rely on the product more&rdquo;
+            </p>
+          </div>
+        </div>
       </div>
 
-      {/* ── 7. Mobile App ───────────────────────────────── */}
-      <Section>
-        <SectionTitle title="Extending Full Control Into a Native Experience" bodyClassName="type-body">
-          <p>
-            I designed a native mobile app to give business owners full
-            financial control from anywhere. The experience allows users to
-            monitor cash flow, send payments, access credit, and respond to
-            financial changes in real time &mdash; turning banking from a place
-            you go into a tool that moves with your business.
-          </p>
-        </SectionTitle>
+      {/* ─── DIVIDER ─────────────────────────────────────────── */}
+      <VerticalDivider />
 
-        <ImageGrid
-          images={[
-            imgBitmap8,
-            imgBitmap19,
-            imgBitmap18,
-            imgBitmap14,
-            imgBitmap12,
-            imgBitmap11,
-            imgBitmap10,
-            imgBitmap9,
-            imgBitmap15,
-            imgBitmap13,
-            imgBitmap16,
-            imgBitmap17,
-          ]}
-          columns={4}
-          alt="Mobile app screen"
-        />
-      </Section>
-
-      {/* ── 8. Design System ────────────────────────────── */}
-      <Section>
-        <SectionTitle title="Designing for Consistency at Global Scale" bodyClassName="type-body">
-          <p>
-            To support product teams working across regions and time zones, I
-            designed a scalable design system focused on clarity, reuse, and
-            speed. The system standardizes core components, interaction
-            patterns, and visual language &mdash; enabling teams to build faster
-            while maintaining a consistent user experience.
-          </p>
-        </SectionTitle>
-
-        <ImageGrid
-          images={[imgDesignSystem1, imgDesignSystem2]}
-          columns={2}
-          alt="Design system"
-        />
-      </Section>
-
-      {/* ── 9. Outcome Quote ────────────────────────────── */}
-      <QuoteBanner className="type-display text-center text-text-primary">
-        The improved experience led to a significant increase in product
-        adoption and engagement, driving a 170% growth in usage. By reducing
-        friction, increasing clarity, and giving users faster financial control,
-        the product shifted from a functional tool to a daily business
-        essential.
-      </QuoteBanner>
-
-      {/* ── 10. Final Quote ──────────────────────────────── */}
-      <ImageWithQuote
-        src={imgImage194}
-        alt="Bluevine insight"
-        preQuote={`"When users clearly understand what will happen next, It makes them:`}
-        quote='they move faster, make better decisions, and rely on the product more often"'
-      />
-      </CaseStudyBody>
-    </>
+      {/* ═══════════════════════════════════════════════════════
+          NEXT CASE STUDY NAVIGATION
+          ═══════════════════════════════════════════════════════ */}
+      <section className="pb-12 md:pb-16 px-6 md:px-12 lg:px-16">
+        <div className="max-w-4xl mx-auto flex items-center justify-between">
+          <div className="text-left">
+            <p className="text-[11px] uppercase tracking-[0.15em] mb-1" style={{ color: 'var(--text-tertiary)' }}>
+              Previous Case Study
+            </p>
+            <p className="text-base md:text-lg font-medium flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
+              <ArrowRight className="w-4 h-4 rotate-180" />
+              Bit
+            </p>
+          </div>
+          <div className="text-right">
+            <p className="text-[11px] uppercase tracking-[0.15em] mb-1" style={{ color: 'var(--text-tertiary)' }}>
+              Next Case Study
+            </p>
+            <p className="text-base md:text-lg font-medium flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
+              Xtream IO
+              <ArrowRight className="w-4 h-4" />
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }
