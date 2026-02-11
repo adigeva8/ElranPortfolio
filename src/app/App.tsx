@@ -22,6 +22,35 @@ export function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState<'home' | 'about' | 'contact' | 'fundguard' | 'bit' | 'xtreamio' | 'monday' | 'bluevine'>('home');
 
+  // Navigate to a page and push browser history so the back button works
+  const navigateTo = (page: typeof currentPage) => {
+    if (page === 'home') {
+      // When going home, push a home state so forward navigation works correctly
+      window.history.pushState({ page: 'home' }, '');
+    } else {
+      window.history.pushState({ page }, '');
+    }
+    setCurrentPage(page);
+  };
+
+  // Listen for browser back/forward button
+  useEffect(() => {
+    // Replace current history entry with home state on initial load
+    window.history.replaceState({ page: 'home' }, '');
+
+    const handlePopState = (event: PopStateEvent) => {
+      if (event.state?.page) {
+        setCurrentPage(event.state.page);
+      } else {
+        // If no state (e.g. user went all the way back), go home
+        setCurrentPage('home');
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
   useEffect(() => {
     // Start the big headline rotation after initial animations
     const timer = setTimeout(() => {
@@ -42,31 +71,31 @@ export function App() {
   }, [showBigHeadline]);
 
   if (currentPage === 'about') {
-    return <AboutPage onNavigateHome={() => setCurrentPage('home')} onNavigateContact={() => setCurrentPage('contact')} />;
+    return <AboutPage onNavigateHome={() => navigateTo('home')} onNavigateContact={() => navigateTo('contact')} />;
   }
 
   if (currentPage === 'contact') {
-    return <ContactPage onNavigateHome={() => setCurrentPage('home')} onNavigateAbout={() => setCurrentPage('about')} />;
+    return <ContactPage onNavigateHome={() => navigateTo('home')} onNavigateAbout={() => navigateTo('about')} />;
   }
 
   if (currentPage === 'fundguard') {
-    return <FundguardCaseStudy onNavigateHome={() => setCurrentPage('home')} />;
+    return <FundguardCaseStudy onNavigateHome={() => navigateTo('home')} />;
   }
 
   if (currentPage === 'bit') {
-    return <BitCaseStudy onNavigateHome={() => setCurrentPage('home')} />;
+    return <BitCaseStudy onNavigateHome={() => navigateTo('home')} />;
   }
 
   if (currentPage === 'xtreamio') {
-    return <XtreamIOCaseStudy onNavigateHome={() => setCurrentPage('home')} />;
+    return <XtreamIOCaseStudy onNavigateHome={() => navigateTo('home')} />;
   }
 
   if (currentPage === 'monday') {
-    return <MondayCaseStudy onNavigateHome={() => setCurrentPage('home')} />;
+    return <MondayCaseStudy onNavigateHome={() => navigateTo('home')} />;
   }
 
   if (currentPage === 'bluevine') {
-    return <BluevineCaseStudy onNavigateHome={() => setCurrentPage('home')} />;
+    return <BluevineCaseStudy onNavigateHome={() => navigateTo('home')} />;
   }
 
   return (
@@ -93,13 +122,13 @@ export function App() {
               main
             </a>
             <button 
-              onClick={() => setCurrentPage('about')}
+              onClick={() => navigateTo('about')}
               className="hover:opacity-70 transition-opacity duration-[var(--duration-fast)] font-[var(--weight-light)]"
             >
               about
             </button>
             <button 
-              onClick={() => setCurrentPage('contact')}
+              onClick={() => navigateTo('contact')}
               className="hover:opacity-70 transition-opacity duration-[var(--duration-fast)] font-[var(--weight-light)]"
             >
               contact
@@ -141,7 +170,7 @@ export function App() {
                     className="hover:opacity-70 transition-opacity font-[var(--weight-light)]"
                     onClick={() => {
                       setMobileMenuOpen(false);
-                      setCurrentPage('about');
+                      navigateTo('about');
                     }}
                   >
                     about
@@ -150,7 +179,7 @@ export function App() {
                     className="hover:opacity-70 transition-opacity font-[var(--weight-light)]"
                     onClick={() => {
                       setMobileMenuOpen(false);
-                      setCurrentPage('contact');
+                      navigateTo('contact');
                     }}
                   >
                     contact
@@ -245,7 +274,7 @@ export function App() {
         imageSrc={imgMacStudio}
         backgroundColor="var(--surface-primary)"
         imagePosition="right"
-        onClick={() => setCurrentPage('fundguard')}
+        onClick={() => navigateTo('fundguard')}
       />
 
       {/* Project 2: Monday.com */}
@@ -255,7 +284,7 @@ export function App() {
         imageSrc={imgMondayMacBook}
         backgroundColor="var(--surface-secondary)"
         imagePosition="left"
-        onClick={() => setCurrentPage('monday')}
+        onClick={() => navigateTo('monday')}
       />
 
       {/* Project 3: Bit App */}
@@ -265,7 +294,7 @@ export function App() {
         imageSrc={imgIPhone15Pro}
         backgroundColor="var(--surface-primary)"
         imagePosition="right"
-        onClick={() => setCurrentPage('bit')}
+        onClick={() => navigateTo('bit')}
       />
 
       {/* Project 4: Bluevine */}
@@ -275,7 +304,7 @@ export function App() {
         imageSrc={imgBluevinePhones}
         backgroundColor="var(--surface-secondary)"
         imagePosition="left"
-        onClick={() => setCurrentPage('bluevine')}
+        onClick={() => navigateTo('bluevine')}
       />
 
       {/* Project 5: XtreamIO */}
@@ -285,7 +314,7 @@ export function App() {
         imageSrc={imgIPadMini}
         backgroundColor="var(--surface-primary)"
         imagePosition="right"
-        onClick={() => setCurrentPage('xtreamio')}
+        onClick={() => navigateTo('xtreamio')}
       />
     </div>
   );
