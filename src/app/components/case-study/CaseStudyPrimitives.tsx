@@ -659,7 +659,7 @@ export function LazyVideo({
   }, []);
 
   return (
-    <div ref={ref}>
+    <div ref={ref} className="w-full h-full">
       {isVisible ? (
         <video
           src={src}

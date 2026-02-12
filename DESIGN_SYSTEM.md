@@ -398,10 +398,10 @@ Not enabled by default (Figma design is light-only). The structure is ready — 
 
 ### Priority order for remaining pages:
 
-1. **`CaseStutyBitContent.tsx`** — Replace hardcoded hex colors with tokens
-2. **`CaseStutyXreamioContent.tsx`** — Replace colors + spacing with tokens
-3. **`CaseStutyMondayConent.tsx`** — Replace colors + spacing with tokens
-4. **`CaseStutyBluevineConent.tsx`** — Replace colors + spacing with tokens
+1. **`CaseStudyBitContent.tsx`** — Replace hardcoded hex colors with tokens
+2. **`CaseStudyXreamioContent.tsx`** — Replace colors + spacing with tokens
+3. **`CaseStudyMondayContent.tsx`** — Replace colors + spacing with tokens
+4. **`CaseStudyBluevineContent.tsx`** — Replace colors + spacing with tokens
 5. **`AboutPage.tsx`** — Apply type scale + layout primitives
 6. **`ContactPage.tsx`** — Apply type scale + layout primitives
 

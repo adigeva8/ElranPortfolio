@@ -1,14 +1,15 @@
 import { CaseStudyLayout } from '@/app/components/CaseStudyLayout';
-import CaseStutyXreamioContent from '@/imports/CaseStutyXreamioContent';
+import CaseStudyXreamioContent from '@/imports/CaseStudyXreamioContent';
 
 interface XtreamIOCaseStudyProps {
   onNavigateHome: () => void;
+  onNextStudy: () => void;
 }
 
-export function XtreamIOCaseStudy({ onNavigateHome }: XtreamIOCaseStudyProps) {
+export function XtreamIOCaseStudy({ onNavigateHome, onNextStudy }: XtreamIOCaseStudyProps) {
   return (
     <CaseStudyLayout onNavigateHome={onNavigateHome}>
-      <CaseStutyXreamioContent />
+      <CaseStudyXreamioContent onNextStudy={onNextStudy} />
     </CaseStudyLayout>
   );
 }

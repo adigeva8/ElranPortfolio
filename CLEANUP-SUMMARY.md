@@ -76,7 +76,7 @@ Moved `react`/`react-dom` from peerDependencies to regular dependencies.
 
 ## Remaining TODOs
 
-- [ ] **Typos in Figma-generated filenames**: `CaseStuty` (should be CaseStudy), `Conent` (should be Content), `XreamioContent` (should be XtreamIOContent). These are in the large Figma-generated content files — renaming requires updating import paths. Low risk to defer.
+- [x] **Typos in Figma-generated filenames**: `CaseStuty` renamed to `CaseStudy`, `Conent` renamed to `Content`. All import paths updated.
 - [ ] **No router**: App uses `useState` for page switching — no URL-based navigation. Consider adding `react-router` if deep linking is needed.
 - [ ] **Large JS bundle**: 844 kB gzipped to 261 kB. Consider code-splitting case study pages with `React.lazy()`.
 - [ ] **No tests**: Consider adding basic render smoke tests for key pages.
@@ -109,11 +109,11 @@ src/
       MondayCaseStudy.tsx               # Thin wrapper → CaseStudyLayout + content
       BluevineCaseStudy.tsx             # Thin wrapper → CaseStudyLayout + content
   imports/                              # Figma Make generated content (13 used files)
-    CaseStutyFundguardContent.tsx       # Fundguard case study body
-    CaseStutyBitContent.tsx             # Bit case study body
-    CaseStutyXreamioContent.tsx         # XtreamIO case study body
-    CaseStutyMondayConent.tsx           # Monday case study body
-    CaseStutyBluevineConent.tsx         # Bluevine case study body
+    CaseStudyFundguardContent.tsx       # Fundguard case study body
+    CaseStudyBitContent.tsx             # Bit case study body
+    CaseStudyXreamioContent.tsx         # XtreamIO case study body
+    CaseStudyMondayContent.tsx          # Monday case study body
+    CaseStudyBluevineContent.tsx        # Bluevine case study body
     FundguardStudyCaseText.tsx          # Fundguard text content
     svg-*.ts / svg-*.tsx                # SVG data used by content files (7 files)
   assets/                               # PNG images (44 files, hash-named)

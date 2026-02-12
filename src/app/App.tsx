@@ -56,19 +56,19 @@ export function App() {
     return <ContactPage onNavigateHome={() => navigateTo('home')} onNavigateAbout={() => navigateTo('about')} />;
   }
   if (currentPage === 'fundguard') {
-    return <FundguardCaseStudy onNavigateHome={() => navigateTo('home')} />;
+    return <FundguardCaseStudy onNavigateHome={() => navigateTo('home')} onNextStudy={() => navigateTo('monday')} />;
   }
   if (currentPage === 'bit') {
-    return <BitCaseStudy onNavigateHome={() => navigateTo('home')} />;
+    return <BitCaseStudy onNavigateHome={() => navigateTo('home')} onNextStudy={() => navigateTo('bluevine')} />;
   }
   if (currentPage === 'xtreamio') {
-    return <XtreamIOCaseStudy onNavigateHome={() => navigateTo('home')} />;
+    return <XtreamIOCaseStudy onNavigateHome={() => navigateTo('home')} onNextStudy={() => navigateTo('fundguard')} />;
   }
   if (currentPage === 'monday') {
-    return <MondayCaseStudy onNavigateHome={() => navigateTo('home')} />;
+    return <MondayCaseStudy onNavigateHome={() => navigateTo('home')} onNextStudy={() => navigateTo('bit')} />;
   }
   if (currentPage === 'bluevine') {
-    return <BluevineCaseStudy onNavigateHome={() => navigateTo('home')} />;
+    return <BluevineCaseStudy onNavigateHome={() => navigateTo('home')} onNextStudy={() => navigateTo('xtreamio')} />;
   }
 
   /* ================================================================
