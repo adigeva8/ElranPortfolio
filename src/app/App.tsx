@@ -198,78 +198,15 @@ export function App() {
         )}
       </AnimatePresence>
 
-      {/* ── Hero Section ────────────────────────────────────────── */}
-      <section className="min-h-screen flex flex-col items-center justify-center px-6 md:px-12 lg:px-16 pt-20 relative">
-        <div className="text-center max-w-4xl">
-          <motion.h1
-            className="font-extralight leading-[1.08] tracking-tight mb-8"
-            style={{
-              color: 'var(--text-primary)',
-              fontSize: 'clamp(2.5rem, 6vw, 5.5rem)',
-            }}
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.4, ease: 'easeOut' }}
-          >
-            Welcome to my world
-          </motion.h1>
-          <motion.p
-            className="font-light leading-relaxed"
-            style={{
-              color: 'var(--text-secondary)',
-              fontSize: 'clamp(1.05rem, 2vw, 1.5rem)',
-            }}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.7, ease: 'easeOut' }}
-          >
-            Where{' '}
-            <span className="italic" style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-primary)' }}>
-              strategy
-            </span>{' '}
-            meets{' '}
-            <span className="italic" style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-primary)' }}>
-              execution
-            </span>{' '}
-            and user experience is at the{' '}
-            <span className="italic" style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-primary)' }}>
-              heart
-            </span>{' '}
-            of every design
-          </motion.p>
-        </div>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          className="absolute bottom-8 md:bottom-12"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 0.8 }}
-        >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-            className="w-[22px] h-[36px] rounded-full flex items-start justify-center pt-2"
-            style={{ border: '1.5px solid rgba(24,39,48,0.25)' }}
-          >
-            <div
-              className="w-[3px] h-[6px] rounded-full"
-              style={{ backgroundColor: 'rgba(24,39,48,0.35)' }}
-            />
-          </motion.div>
-        </motion.div>
-      </section>
-
-      {/* ── About Section ───────────────────────────────────────── */}
-      <section className="py-20 md:py-32 lg:py-40 px-6 md:px-12 lg:px-16">
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+      {/* ── About / Hero Section ─────────────────────────────────── */}
+      <section className="relative min-h-screen pt-20 pb-20 px-6 md:px-12 lg:px-16 flex flex-col justify-center">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-20 w-full">
           {/* Text Content */}
           <motion.div
             className="flex-1 flex flex-col gap-5"
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.3, ease: 'easeOut' }}
           >
             <h2
               className="text-2xl md:text-3xl lg:text-4xl font-extralight leading-tight"
@@ -281,7 +218,7 @@ export function App() {
               className="text-base md:text-lg font-light leading-relaxed"
               style={{ color: 'var(--text-primary)' }}
             >
-              I'm a Head of Product Design with a passion for simplifying complex problems.
+              Senior Product Design Lead with a passion for simplifying complex problems.
             </p>
             <p
               className="text-sm md:text-base font-light leading-relaxed"
@@ -304,10 +241,9 @@ export function App() {
           {/* Photo */}
           <motion.div
             className="flex-1 max-w-sm lg:max-w-md"
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.5, ease: 'easeOut' }}
           >
             <img
               src={imgPhoto}
@@ -318,6 +254,26 @@ export function App() {
             />
           </motion.div>
         </div>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          className="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
+        >
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+            className="w-[22px] h-[36px] rounded-full flex items-start justify-center pt-2"
+            style={{ border: '1.5px solid rgba(24,39,48,0.25)' }}
+          >
+            <div
+              className="w-[3px] h-[6px] rounded-full"
+              style={{ backgroundColor: 'rgba(24,39,48,0.35)' }}
+            />
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* ── Quote Section ───────────────────────────────────────── */}
