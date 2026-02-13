@@ -47,6 +47,7 @@
   /* Border */
   --color-border-subtle: var(--border-subtle);
   --color-border-muted:  var(--border-muted);
+  --color-border-hairline: var(--border-hairline);
 
   /* Case-study accents */
   --color-teal:  var(--color-teal-500);
@@ -62,7 +63,10 @@
   --radius-full: var(--radius-full);
 
   /* Shadows */
+  --shadow-xs: var(--shadow-xs);
   --shadow-sm: var(--shadow-sm);
+  --shadow-card: var(--shadow-card);
+  --shadow-card-hover: var(--shadow-card-hover);
   --shadow-md: var(--shadow-md);
   --shadow-lg: var(--shadow-lg);
 }
@@ -116,6 +120,16 @@
   :focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 2px;
+  }
+
+  /* Reduced motion - disable all transitions/animations */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 

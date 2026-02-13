@@ -58,9 +58,24 @@ import imgAnnotatedFlow3 from '@/assets/bit-annotated-flow-3.png';
 import { LazyVideo } from '@/app/components/case-study/CaseStudyPrimitives';
 
 /* ── Scroll-triggered reveal ─────────────────────────────────── */
-function Reveal({ children, className = '', delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
+function Reveal({
+  children,
+  className = '',
+  delay = 0,
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  const prefersReduced = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   return (
-    <motion.div className={className} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.7, delay, ease: 'easeOut' }}>
+    <motion.div
+      className={className}
+      initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.5, delay, ease: 'easeOut' }}
+    >
       {children}
     </motion.div>
   );
@@ -191,13 +206,13 @@ export default function CaseStudyBitContent({ onNextStudy }: { onNextStudy?: () 
 
           <Reveal delay={0.1}>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold leading-[1.12] mb-6" style={{ color: 'var(--text-primary)' }}>
-              Designing consumer fintech at national scale
+              Designing scalable flows for a high-volume P2P platform
             </h1>
           </Reveal>
 
           <Reveal delay={0.15}>
-            <p className="text-base md:text-lg font-light italic max-w-2xl mx-auto" style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-secondary)' }}>
-              When speed and trust are non-negotiable
+            <p className="text-base md:text-lg font-light max-w-2xl mx-auto leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+              Improved payment flows in one of Israel&rsquo;s largest P2P platforms. Focused on reducing friction, clarifying transaction state, and improving system feedback in high-frequency journeys.
             </p>
           </Reveal>
 
@@ -224,6 +239,45 @@ export default function CaseStudyBitContent({ onNextStudy }: { onNextStudy?: () 
           <img src={imgScreenShot20200904At203224} alt="Bit app screens" className="w-full h-auto rounded-xl" loading="eager" decoding="async" />
         </div>
       </Reveal>
+
+      {/* TL;DR Block */}
+      <section className="pb-10 md:pb-14 px-6 md:px-12 lg:px-16">
+        <div className="max-w-4xl mx-auto">
+          <Reveal>
+            <div className="rounded-xl p-6 md:p-8" style={{ backgroundColor: 'var(--surface-secondary)' }}>
+              <p className="text-[11px] uppercase tracking-[0.3em] mb-4" style={{ color: 'var(--text-tertiary)' }}>TL;DR</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.2em] mb-1.5" style={{ color: 'var(--text-tertiary)' }}>Problem</p>
+                  <p className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>
+                    High-frequency payment flows created friction, unclear transaction states, and low user confidence in a platform handling millions of transfers.
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.2em] mb-1.5" style={{ color: 'var(--text-tertiary)' }}>Role</p>
+                  <p className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>
+                    Led design for core transfer flows, activation, and engagement experiments.
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.2em] mb-1.5" style={{ color: 'var(--text-tertiary)' }}>What changed</p>
+                  <p className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>
+                    Reduced cognitive load per screen, clarified transaction states, improved first-use activation, and optimized micro-interactions for speed.
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.2em] mb-1.5" style={{ color: 'var(--text-tertiary)' }}>Impact (directional)</p>
+                  <div className="flex flex-col gap-0.5">
+                    <p className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>• Reduced friction in key transfer flows</p>
+                    <p className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>• Improved state visibility during transactions</p>
+                    <p className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>• Strengthened user trust through clearer system feedback</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
 
       <VerticalDivider />
 

@@ -47,9 +47,24 @@ import whyStandardVideo from '@/assets/why-standard-video.mp4';
 import whyProVideo from '@/assets/why-pro-video.mp4';
 
 /* ── Scroll-triggered reveal ─────────────────────────────────── */
-function Reveal({ children, className = '', delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
+function Reveal({
+  children,
+  className = '',
+  delay = 0,
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  const prefersReduced = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   return (
-    <motion.div className={className} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.7, delay, ease: 'easeOut' }}>
+    <motion.div
+      className={className}
+      initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.5, delay, ease: 'easeOut' }}
+    >
       {children}
     </motion.div>
   );
@@ -106,13 +121,13 @@ export default function CaseStudyMondayContent({ onNextStudy }: { onNextStudy?: 
 
           <Reveal delay={0.1}>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold leading-[1.12] mb-6" style={{ color: 'var(--text-primary)' }}>
-              Optimizing monetization and plan selection at scale
+              Simplifying monetization logic across product surfaces
             </h1>
           </Reveal>
 
           <Reveal delay={0.15}>
-            <p className="text-base md:text-lg font-light italic max-w-2xl mx-auto" style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-secondary)' }}>
-              Designing confidence at the moment of commitment
+            <p className="text-base md:text-lg font-light max-w-2xl mx-auto leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+              Redesigned pricing, billing, and plan logic across core workflows to reduce confusion, expose system state, and improve upgrade clarity inside the user journey.
             </p>
           </Reveal>
 
@@ -139,6 +154,45 @@ export default function CaseStudyMondayContent({ onNextStudy }: { onNextStudy?: 
           <img src={imgBoardWithCactusAndPhone} alt="monday.com board with phone" className="w-full h-auto rounded-xl" loading="eager" decoding="async" />
         </div>
       </Reveal>
+
+      {/* TL;DR Block */}
+      <section className="pb-10 md:pb-14 px-6 md:px-12 lg:px-16">
+        <div className="max-w-4xl mx-auto">
+          <Reveal>
+            <div className="rounded-xl p-6 md:p-8" style={{ backgroundColor: 'var(--surface-secondary)' }}>
+              <p className="text-[11px] uppercase tracking-[0.3em] mb-4" style={{ color: 'var(--text-tertiary)' }}>TL;DR</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.2em] mb-1.5" style={{ color: 'var(--text-tertiary)' }}>Problem</p>
+                  <p className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>
+                    Users struggled to choose the right plan—not because pricing was unclear, but because system state and plan constraints were invisible during the decision.
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.2em] mb-1.5" style={{ color: 'var(--text-tertiary)' }}>Role</p>
+                  <p className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>
+                    Led end-to-end design of upgrade flows, plan recommendation logic, and A/B experiments within the growth squad.
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.2em] mb-1.5" style={{ color: 'var(--text-tertiary)' }}>What changed</p>
+                  <p className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>
+                    Redesigned plan comparison, added usage-driven recommendations, simplified the commitment moment, and introduced contextual feature promotion.
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.2em] mb-1.5" style={{ color: 'var(--text-tertiary)' }}>Impact (directional)</p>
+                  <div className="flex flex-col gap-0.5">
+                    <p className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>• Reduced billing confusion across upgrade flows</p>
+                    <p className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>• Improved plan comparison clarity</p>
+                    <p className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>• Streamlined monetization touchpoints</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
 
       <VerticalDivider />
 

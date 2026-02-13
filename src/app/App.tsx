@@ -89,42 +89,72 @@ export function App() {
     }
   };
 
+  /* -- Handle contact ------------------------------------------- */
+  const handleContactClick = () => {
+    setMobileMenuOpen(false);
+    window.location.href = 'mailto:levy.elran@gmail.com';
+  };
+
   /* ================================================================
      HOME PAGE CONTENT
      ================================================================ */
   const renderHomePage = () => (
     <>
-      {/* -- About / Hero Section ----------------------------------- */}
-      <section className="relative min-h-screen pt-20 pb-20 px-6 md:px-12 lg:px-16 flex flex-col justify-center">
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-20 w-full">
+      {/* -- Hero Section ------------------------------------------- */}
+      <section className="relative min-h-screen pt-24 pb-20 px-6 md:px-12 lg:px-16 flex flex-col justify-center">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-10 lg:gap-20 w-full">
           {/* Text Content */}
-          <motion.div
-            className="flex-1 flex flex-col gap-5"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.3, ease: 'easeOut' }}
-          >
-            <h2
-              className="text-2xl md:text-3xl lg:text-4xl font-extralight leading-tight"
+          <div className="flex-1 flex flex-col gap-5">
+            <motion.h1
+              className="text-[clamp(1.75rem,4vw,3.25rem)] font-medium leading-[1.1] tracking-tight"
               style={{ color: 'var(--text-primary)' }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2, ease: 'easeOut' }}
             >
-              Hey, I'm Elran Levy
-            </h2>
-            <p
-              className="text-base md:text-lg font-light leading-relaxed"
-              style={{ color: 'var(--text-primary)' }}
-            >
-              Lead Product Design with a passion for simplifying complex problems.
-            </p>
-            <p
-              className="text-sm md:text-base font-light leading-relaxed"
+              Turning complex enterprise systems into clear, scalable products.
+            </motion.h1>
+            <motion.p
+              className="text-base md:text-lg font-light leading-relaxed max-w-[58ch]"
               style={{ color: 'var(--text-secondary)' }}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.35, ease: 'easeOut' }}
             >
-              Clarity, trust, and usability are at the core of every decision I make. I believe
-              that great design should simplify complex domains without dumbing them down - it
-              should be intuitive, impactful, and built for real user needs.
-            </p>
-            <div className="mt-3 flex items-center gap-5">
+              I redesign system architecture, workflows, and state logic so automation becomes trustworthy and decisions become confident.
+            </motion.p>
+            <motion.p
+              className="text-xs uppercase tracking-[0.2em] font-normal"
+              style={{ color: 'var(--text-muted)' }}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.5, ease: 'easeOut' }}
+            >
+              Selected work: Fundguard &bull; monday.com &bull; bit
+            </motion.p>
+
+            {/* CTAs + Social */}
+            <motion.div
+              className="mt-4 flex items-center gap-5"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.6, ease: 'easeOut' }}
+            >
+              <button
+                onClick={handleWorkClick}
+                className="group inline-flex items-center gap-2 text-sm font-medium hover:gap-3 transition-all duration-300"
+                style={{ color: 'var(--text-primary)', minHeight: '44px' }}
+              >
+                View Selected Work
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+              </button>
+            </motion.div>
+            <motion.div
+              className="flex items-center gap-5"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.7, delay: 0.75, ease: 'easeOut' }}
+            >
               <a
                 href="https://www.linkedin.com/in/elran-levy/"
                 target="_blank"
@@ -143,23 +173,27 @@ export function App() {
               >
                 <Mail className="w-5 h-5" strokeWidth={1.5} />
               </a>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
 
           {/* Photo */}
           <motion.div
             className="flex-1 max-w-sm lg:max-w-md"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.5, ease: 'easeOut' }}
+            transition={{ duration: 0.8, delay: 0.45, ease: 'easeOut' }}
           >
-            <img
-              src={imgPhoto}
-              alt="Elran Levy"
-              className="w-full h-auto object-cover rounded-xl"
-              loading="eager"
-              decoding="async"
-            />
+            <div className="w-48 h-48 rounded-full md:w-full md:h-auto md:rounded-2xl mx-auto overflow-hidden">
+              <img
+                src={imgPhoto}
+                alt="Elran Levy"
+                className="w-full h-full md:h-auto object-cover object-top scale-150 origin-top md:scale-100 md:origin-center"
+                width={480}
+                height={480}
+                loading="eager"
+                decoding="async"
+              />
+            </div>
           </motion.div>
         </div>
 
@@ -174,75 +208,91 @@ export function App() {
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
             className="w-[22px] h-[36px] rounded-full flex items-start justify-center pt-2"
-            style={{ border: '1.5px solid rgba(24,39,48,0.25)' }}
+            style={{ border: '1.5px solid rgba(20,20,20,0.15)' }}
           >
             <div
               className="w-[3px] h-[6px] rounded-full"
-              style={{ backgroundColor: 'rgba(24,39,48,0.35)' }}
+              style={{ backgroundColor: 'rgba(20,20,20,0.25)' }}
             />
           </motion.div>
         </motion.div>
       </section>
 
-      {/* -- Quote Section ------------------------------------------ */}
-      <section className="py-20 md:py-28 px-6 md:px-12" style={{ backgroundColor: 'var(--surface-secondary)' }}>
+      {/* -- About Section ------------------------------------------ */}
+      <section id="about" className="py-20 md:py-28 px-6 md:px-12" style={{ backgroundColor: 'var(--surface-secondary)' }}>
         <motion.div
-          className="max-w-3xl mx-auto text-center"
-          initial={{ opacity: 0, y: 30 }}
+          className="max-w-2xl mx-auto text-center"
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
         >
           <p
-            className="font-extralight leading-snug italic"
+            className="font-extralight leading-[1.15]"
             style={{
               fontFamily: 'var(--font-serif)',
               color: 'var(--text-primary)',
-              fontSize: 'clamp(1.5rem, 3vw, 2.75rem)',
+              fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
             }}
           >
-            Good design is as little design as possible
+            Designing systems that scale.
           </p>
-          <p
-            className="mt-6 text-sm font-light tracking-wider"
-            style={{ color: 'var(--text-secondary)' }}
-          >
-            - Dieter Rams
-          </p>
+          <div className="mt-8 flex flex-col gap-4">
+            <p
+              className="text-sm md:text-base font-light leading-[1.7]"
+              style={{ color: 'var(--text-secondary)' }}
+            >
+              I specialize in enterprise platforms where complexity, automation, and risk intersect.
+              My work focuses on system architecture clarity, workflow optimization, and state visibility—so experts can act with confidence.
+            </p>
+            <p
+              className="text-sm md:text-base font-light leading-[1.7]"
+              style={{ color: 'var(--text-secondary)' }}
+            >
+              I collaborate closely with product, engineering, and data teams to ensure design decisions scale beyond UI into logic, behavior, and system structure.
+            </p>
+          </div>
         </motion.div>
       </section>
 
       {/* -- Selected Work ------------------------------------------ */}
-      <section className="py-20 md:py-32 lg:py-40 px-6 md:px-12 lg:px-16" id="work">
+      <section className="py-16 md:py-28 lg:py-36 px-6 md:px-12 lg:px-16" id="work">
         <div className="max-w-7xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
           >
             <p
-              className="text-xs uppercase tracking-[0.3em] mb-4"
-              style={{ color: 'var(--text-tertiary)' }}
+              className="text-[11px] uppercase tracking-[0.25em] mb-3 font-medium"
+              style={{ color: 'var(--text-muted)' }}
             >
               selected work
             </p>
             <p
-              className="text-base md:text-lg font-light mb-16 max-w-xl"
+              className="text-base md:text-lg font-light mb-14 max-w-lg"
               style={{ color: 'var(--text-secondary)' }}
             >
-              Let's dive into details with a selection of my recent work
+              A selection of my recent work
             </p>
           </motion.div>
 
-          <div className="flex flex-col gap-10 md:gap-14">
+          <div className="flex flex-col gap-8 md:gap-10">
             {/* Fundguard */}
             <ProjectCard
               id="project-fundguard"
-              title="Fundguard"
-              description="Turning Operational Complexity into Clear, Actionable Systems. Designing scalable workflows for investment operations teams."
+              elevated
+              title="Restoring trust in enterprise automation"
+              description="Enterprise fintech platform used by asset managers to configure complex fund hierarchies. Led a structural redesign of reconciliation and exception architecture to increase automation trust."
               imageSrc={imgMacStudio}
               tags={['enterprise fintech', 'B2B']}
+              metrics={[
+                { value: '+30%', label: 'Increase in automation adoption' },
+                { value: '25%', label: 'Faster exception resolution' },
+                { value: 'Reduced errors', label: 'Configuration and downstream rework' },
+              ]}
+              ctaLabel="View Case Study"
               imagePosition="right"
               onClick={() => navigateTo('fundguard')}
             />
@@ -250,10 +300,16 @@ export function App() {
             {/* Monday.com */}
             <ProjectCard
               id="project-monday"
-              title="monday.com"
-              description="Designing monetization and conversion experiences for a work management platform used by millions of users worldwide."
+              title="Simplifying monetization logic across product surfaces"
+              description="Redesigned pricing, billing, and plan logic across core workflows to reduce confusion and improve upgrade clarity. Focused on exposing system state, plan constraints, and value differences inside the user journey."
               imageSrc={imgMondayMacBook}
               tags={['work management', 'monetization']}
+              bullets={[
+                '• Reduced billing confusion across upgrade flows',
+                '• Improved plan comparison clarity',
+                '• Streamlined monetization touchpoints',
+              ]}
+              ctaLabel="View Case Study"
               imagePosition="left"
               onClick={() => navigateTo('monday')}
             />
@@ -261,10 +317,16 @@ export function App() {
             {/* Bit App */}
             <ProjectCard
               id="project-bit"
-              title="bit - app"
-              description="Israel's leading P2P payments app - designing a lean, data-driven money transfer experience for millions of users."
+              title="Designing scalable flows for a high-volume P2P platform"
+              description="Improved payment flows in one of Israel's largest P2P platforms. Focused on reducing friction, clarifying transaction state, and improving system feedback in high-frequency journeys."
               imageSrc={imgIPhone15Pro}
               tags={['mobile app', 'B2C']}
+              bullets={[
+                '• Reduced friction in key transfer flows',
+                '• Improved state visibility during transactions',
+                '• Strengthened user trust through clearer system feedback',
+              ]}
+              ctaLabel="View Case Study"
               imagePosition="right"
               onClick={() => navigateTo('bit')}
             />
@@ -276,6 +338,7 @@ export function App() {
               description="Designing banking and lending experiences that help small businesses manage their finances quickly and confidently."
               imageSrc={imgBluevinePhones}
               tags={['SMB banking', 'B2C']}
+              ctaLabel="View Case Study"
               imagePosition="left"
               onClick={() => navigateTo('bluevine')}
             />
@@ -287,6 +350,7 @@ export function App() {
               description="An all-flash storage platform delivering high performance, scalability, and simplified data management for enterprise."
               imageSrc={imgIPadMini}
               tags={['enterprise', 'data platform']}
+              ctaLabel="View Case Study"
               imagePosition="right"
               onClick={() => navigateTo('xtreamio')}
             />
@@ -296,16 +360,13 @@ export function App() {
 
       {/* -- Footer ------------------------------------------------- */}
       <footer
-        className="pt-6 md:pt-10 pb-16 md:pb-24 px-6 md:px-12 lg:px-16 text-white"
-        style={{ backgroundColor: 'var(--color-gray-900)' }}
+        className="py-12 md:py-16 px-6 md:px-12 lg:px-16"
+        style={{ backgroundColor: 'var(--surface-secondary)', borderTop: '1px solid var(--border-hairline)' }}
       >
-        <div className="max-w-7xl mx-auto">
-          {/* Footer Bottom */}
-          <div className="mt-16 pt-8 flex items-center justify-center" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-            <p className="text-xs font-light" style={{ color: 'rgba(255,255,255,0.4)' }}>
-              Copyright 2025 © Elran Levy
-            </p>
-          </div>
+        <div className="max-w-7xl mx-auto flex items-center justify-center">
+          <p className="text-xs font-light" style={{ color: 'var(--text-muted)' }}>
+            &copy; {new Date().getFullYear()} Elran Levy
+          </p>
         </div>
       </footer>
     </>
@@ -318,20 +379,20 @@ export function App() {
     <div className="min-h-screen bg-white">
       {/* -- Global Fixed Navigation (hidden on case study pages) ----- */}
       {(currentPage === 'home' || currentPage === 'contact') && <motion.header
-        className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md"
-        style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}
-        initial={{ y: -100, opacity: 0 }}
+        className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl"
+        style={{ borderBottom: '1px solid var(--border-hairline)' }}
+        initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+        transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 py-5 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 h-14 md:h-16 flex items-center justify-between">
           <button
             onClick={() => {
               navigateTo('home');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="text-[13px] md:text-sm tracking-[0.25em] uppercase font-light"
-            style={{ color: 'var(--text-primary)' }}
+            className="text-[13px] tracking-[0.2em] uppercase font-medium"
+            style={{ color: 'var(--text-primary)', minHeight: '44px' }}
           >
             elran levy
           </button>
@@ -339,29 +400,37 @@ export function App() {
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8 lg:gap-10 text-[13px]">
             <button
-              onClick={() => {
-                navigateTo('home');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-              className="hover:opacity-50 transition-opacity duration-300 font-light"
-              style={{ color: 'var(--text-primary)' }}
+              onClick={handleWorkClick}
+              className="hover:opacity-50 transition-opacity duration-200 font-normal"
+              style={{ color: 'var(--text-primary)', minHeight: '44px' }}
             >
-              about
+              Work
             </button>
             <button
-              onClick={handleWorkClick}
-              className="hover:opacity-50 transition-opacity duration-300 font-light"
-              style={{ color: 'var(--text-primary)' }}
+              onClick={() => {
+                setMobileMenuOpen(false);
+                if (currentPage === 'home') {
+                  document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                  navigateTo('home');
+                  setTimeout(() => {
+                    document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+                  }, 150);
+                }
+              }}
+              className="hover:opacity-50 transition-opacity duration-200 font-normal"
+              style={{ color: 'var(--text-primary)', minHeight: '44px' }}
             >
-              projects
+              About
             </button>
           </nav>
 
           {/* Mobile Hamburger */}
           <button
-            className="md:hidden"
+            className="md:hidden flex items-center justify-center"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
+            style={{ minWidth: '44px', minHeight: '44px' }}
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -388,19 +457,25 @@ export function App() {
             <nav className="flex flex-col items-center gap-8 text-xl">
               <button
                 className="font-light hover:opacity-50 transition-opacity"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  navigateTo('home');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
+                onClick={handleWorkClick}
               >
-                about
+                Work
               </button>
               <button
                 className="font-light hover:opacity-50 transition-opacity"
-                onClick={handleWorkClick}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  if (currentPage === 'home') {
+                    document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+                  } else {
+                    navigateTo('home');
+                    setTimeout(() => {
+                      document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+                    }, 150);
+                  }
+                }}
               >
-                projects
+                About
               </button>
             </nav>
           </motion.div>

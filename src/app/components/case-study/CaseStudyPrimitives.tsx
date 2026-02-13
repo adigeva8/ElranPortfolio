@@ -174,7 +174,11 @@ export function InfoBoxGrid({ items }: { items: string[] }) {
       {items.map((item, i) => (
         <div
           key={i}
-          className="bg-surface-secondary px-[var(--space-4)] py-[var(--space-3)] md:px-[var(--space-8)] md:py-[var(--space-4)] flex items-center"
+          className="px-[var(--space-4)] py-[var(--space-3)] md:px-[var(--space-8)] md:py-[var(--space-4)] flex items-center rounded-xl"
+          style={{
+            backgroundColor: 'var(--surface-secondary)',
+            border: '1px solid var(--border-hairline)',
+          }}
         >
           <p className="type-body-info">
             {item}
@@ -209,7 +213,11 @@ export function PersonaCardGrid({
       {personas.map((p, i) => (
         <div
           key={i}
-          className="bg-surface-secondary flex flex-col items-center gap-[var(--space-6)] md:gap-[var(--space-8)] p-[var(--card-px)] md:p-[var(--card-px-md)] overflow-hidden"
+          className="flex flex-col items-center gap-[var(--space-6)] md:gap-[var(--space-8)] p-[var(--card-px)] md:p-[var(--card-px-md)] overflow-hidden rounded-xl"
+          style={{
+            backgroundColor: 'var(--surface-secondary)',
+            border: '1px solid var(--border-hairline)',
+          }}
         >
           <div className="flex flex-col items-center gap-[var(--space-3)] md:gap-[var(--space-6)]">
             <p className={nameClassName ?? "type-label"}>
@@ -260,7 +268,13 @@ export function HypothesisBlock({
   whyLabelClassName,
 }: HypothesisProps) {
   return (
-    <div className="bg-surface-secondary p-[var(--card-px)] md:p-[var(--card-px-md)] lg:p-[var(--space-12)] flex flex-col gap-[var(--space-3)] md:gap-[var(--space-4)]">
+    <div
+      className="p-[var(--card-px)] md:p-[var(--card-px-md)] lg:p-[var(--space-12)] flex flex-col gap-[var(--space-3)] md:gap-[var(--space-4)] rounded-xl"
+      style={{
+        backgroundColor: 'var(--surface-secondary)',
+        border: '1px solid var(--border-hairline)',
+      }}
+    >
       <p className="type-caption">Hypothesis {number}</p>
       <h3 className={titleClassName ?? "type-h3"}>
         {title}
@@ -302,7 +316,13 @@ export function InsightBlock({
   contentClassName?: string;
 }) {
   return (
-    <div className="bg-surface-secondary p-[var(--card-px)] md:p-[var(--card-px-md)] lg:p-[var(--space-12)]">
+    <div
+      className="p-[var(--card-px)] md:p-[var(--card-px-md)] lg:p-[var(--space-12)] rounded-xl"
+      style={{
+        backgroundColor: 'var(--surface-secondary)',
+        border: '1px solid var(--border-hairline)',
+      }}
+    >
       {label && (
         <p className={labelClassName ?? "type-caption mb-[var(--space-2)]"}>{label}</p>
       )}
@@ -362,7 +382,10 @@ export function QuoteBanner({
   className?: string;
 }) {
   return (
-    <section className={`w-full py-[var(--space-14)] md:py-[var(--space-20)] lg:py-[var(--space-28)] ${bg}`}>
+    <section
+      className={`w-full py-[var(--space-14)] md:py-[var(--space-20)] lg:py-[var(--space-24)] ${bg}`}
+      style={{ borderTop: '1px solid var(--border-hairline)', borderBottom: '1px solid var(--border-hairline)' }}
+    >
       <div className="max-w-[var(--content-max-w)] mx-auto px-[var(--content-px)] md:px-[var(--content-px-md)] lg:px-[var(--content-px-lg)]">
         <p className={className ?? "type-display text-center text-text-primary"}>
           {children}
@@ -438,9 +461,13 @@ export function SkillCardGrid({
           key={i}
           className={
             hasDescriptions
-              ? 'bg-surface-secondary p-[var(--space-8)] md:p-[50px] flex flex-col gap-[var(--space-5)] md:gap-[34px]'
-              : 'bg-surface-secondary p-[var(--card-px)] md:px-[50px] md:py-[var(--space-12)] flex flex-col gap-[var(--space-3)] md:gap-[var(--space-5)]'
+              ? 'p-[var(--space-8)] md:p-[50px] flex flex-col gap-[var(--space-5)] md:gap-[34px] rounded-xl'
+              : 'p-[var(--card-px)] md:px-[50px] md:py-[var(--space-12)] flex flex-col gap-[var(--space-3)] md:gap-[var(--space-5)] rounded-xl'
           }
+          style={{
+            backgroundColor: 'var(--surface-secondary)',
+            border: '1px solid var(--border-hairline)',
+          }}
         >
           <p className="type-label">
             {c.label}

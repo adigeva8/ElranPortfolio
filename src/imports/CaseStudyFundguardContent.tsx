@@ -1,5 +1,5 @@
-import { type ReactNode } from 'react';
-import { motion } from 'motion/react';
+import { type ReactNode, useState, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   ArrowRight,
   Layers,
@@ -8,17 +8,10 @@ import {
   AlertTriangle,
   Network,
   Eye,
-  ShieldCheck,
-  BrainCircuit,
-  Target,
-  BarChart3,
-  Sparkles,
-  Workflow,
-  CheckCircle2,
-  Quote,
   Lightbulb,
   GripVertical,
-  ArrowDownRight,
+  CheckCircle2,
+  X,
 } from 'lucide-react';
 
 /* ── Existing images ─────────────────────────────────────────── */
@@ -31,8 +24,7 @@ import imgFlow3 from '@/assets/fg-flow-3.png';
 import imgFlow4 from '@/assets/fg-flow-4.png';
 import imgFlow5 from '@/assets/fg-flow-5.png';
 
-
-/* ── Scroll-triggered reveal ─────────────────────────────────── */
+/* ── Scroll-triggered reveal (reduced-motion aware) ─────────── */
 function Reveal({
   children,
   className = '',
@@ -42,13 +34,14 @@ function Reveal({
   className?: string;
   delay?: number;
 }) {
+  const prefersReduced = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: 28 }}
+      initial={prefersReduced ? false : { opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.7, delay, ease: 'easeOut' }}
+      transition={{ duration: 0.5, delay, ease: 'easeOut' }}
     >
       {children}
     </motion.div>
@@ -58,9 +51,95 @@ function Reveal({
 /* ── Vertical divider ────────────────────────────────────────── */
 function VerticalDivider() {
   return (
-    <div className="flex justify-center py-8 md:py-10">
-      <div className="w-px h-12 md:h-16" style={{ backgroundColor: 'var(--text-primary)' }} />
+    <div className="flex justify-center py-6 md:py-8">
+      <div className="w-px h-10 md:h-14" style={{ backgroundColor: 'var(--border-subtle)' }} />
     </div>
+  );
+}
+
+/* ── Image Lightbox ──────────────────────────────────────────── */
+function Lightbox({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) {
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleEsc);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', handleEsc);
+      document.body.style.overflow = '';
+    };
+  }, [onClose]);
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 cursor-zoom-out"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+          aria-label="Close lightbox"
+        >
+          <X className="w-5 h-5 text-white" />
+        </button>
+        <motion.img
+          src={src}
+          alt={alt}
+          className="max-w-full max-h-[90vh] object-contain rounded-lg"
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          onClick={(e) => e.stopPropagation()}
+        />
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
+/* ── Zoomable Image ──────────────────────────────────────────── */
+function ZoomableImage({ src, alt, className = '' }: { src: string; alt: string; className?: string }) {
+  const [open, setOpen] = useState(false);
+  const handleClose = useCallback(() => setOpen(false), []);
+  return (
+    <>
+      <img
+        src={src}
+        alt={alt}
+        className={`cursor-zoom-in ${className}`}
+        loading="lazy"
+        decoding="async"
+        onClick={() => setOpen(true)}
+      />
+      {open && <Lightbox src={src} alt={alt} onClose={handleClose} />}
+    </>
+  );
+}
+
+/* ── Jump-to anchor link ─────────────────────────────────────── */
+function JumpLink({ href, children }: { href: string; children: ReactNode }) {
+  return (
+    <a
+      href={href}
+      onClick={(e) => {
+        e.preventDefault();
+        document.getElementById(href.replace('#', ''))?.scrollIntoView({ behavior: 'smooth' });
+      }}
+      className="text-xs md:text-sm font-normal px-3 py-1.5 rounded-lg transition-all duration-200 hover:bg-black/[0.04]"
+      style={{
+        border: '1px solid var(--border-hairline)',
+        color: 'var(--text-secondary)',
+        minHeight: '36px',
+        display: 'inline-flex',
+        alignItems: 'center',
+      }}
+    >
+      {children}
+    </a>
   );
 }
 
@@ -73,14 +152,13 @@ function VerticalDivider() {
    · Hypothesis-driven design framing
    · Vertical timeline approach
    · Canvas-based solution showcase
-   · User quotes as editorial testimony
    · Outlined stat cards on white
    ================================================================ */
 export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy?: () => void }) {
   return (
     <div className="bg-white">
       {/* ═══════════════════════════════════════════════════════
-          HERO
+          1) HERO
           ═══════════════════════════════════════════════════════ */}
       <section className="pt-24 md:pt-32 lg:pt-40 pb-6 md:pb-8 px-6 md:px-12 lg:px-16">
         <div className="max-w-4xl mx-auto text-center">
@@ -98,7 +176,7 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
               className="text-3xl md:text-4xl lg:text-5xl font-semibold leading-[1.12] mb-6"
               style={{ color: 'var(--text-primary)' }}
             >
-              Turning operational complexity into control
+              Restoring Trust in Enterprise Automation
             </h1>
           </Reveal>
 
@@ -107,7 +185,7 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
               className="text-base md:text-lg font-light italic max-w-2xl mx-auto"
               style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-secondary)' }}
             >
-              When experts need systems they can trust
+              When automation accuracy isn&rsquo;t enough &mdash; system state must be visible.
             </p>
           </Reveal>
 
@@ -119,9 +197,9 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
             >
               {[
                 { label: 'Role', value: 'Head of Product Design' },
-                { label: 'Team', value: 'PM · 6 Engineers · Data Science · Enterprise Operations' },
-                { label: 'Scope', value: 'Core reconciliation & fund hierarchy workflows' },
-                { label: 'Impact', value: '+30% automation adoption · 25% faster resolution · Reduced config errors' },
+                { label: 'Team', value: 'Product · Engineering · Data Science · Enterprise Operations' },
+                { label: 'Scope', value: 'Reconciliation architecture · Fund hierarchy · Exception handling' },
+                { label: 'Impact', value: '+30% automation adoption · 25% faster resolution · Reduced manual overrides' },
               ].map((m) => (
                 <div key={m.label}>
                   <p className="text-[11px] uppercase tracking-[0.15em] mb-2" style={{ color: 'var(--text-tertiary)' }}>{m.label}</p>
@@ -136,16 +214,100 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
       {/* Hero image */}
       <Reveal>
         <div className="max-w-6xl mx-auto px-6 md:px-12 pb-4">
-          <img src={imgHeroDashboard} alt="FundGuard reconciliation dashboard" className="w-full h-auto rounded-xl" loading="eager" decoding="async" />
+          <ZoomableImage src={imgHeroDashboard} alt="FundGuard reconciliation dashboard" className="w-full h-auto rounded-xl" />
         </div>
       </Reveal>
 
       <VerticalDivider />
 
       {/* ═══════════════════════════════════════════════════════
-          CONTEXT - Editorial narrative with icon pills
+          2) TL;DR BLOCK
           ═══════════════════════════════════════════════════════ */}
-      <section className="pb-16 md:pb-20 px-6 md:px-12 lg:px-16">
+      <section className="pb-12 md:pb-16 px-6 md:px-12 lg:px-16" id="tldr">
+        <div className="max-w-4xl mx-auto">
+          <Reveal>
+            <p className="text-[11px] uppercase tracking-[0.3em] mb-4" style={{ color: 'var(--text-tertiary)' }}>
+              TL;DR
+            </p>
+            <h2
+              className="text-2xl md:text-3xl font-semibold mb-8 leading-snug"
+              style={{ color: 'var(--text-primary)' }}
+            >
+              Restoring trust in enterprise automation
+            </h2>
+          </Reveal>
+
+          {/* Summary card */}
+          <Reveal delay={0.1}>
+            <div
+              className="rounded-xl p-6 md:p-8 mb-8"
+              style={{ backgroundColor: 'var(--surface-secondary)' }}
+            >
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: 'var(--text-tertiary)' }}>Problem</p>
+                  <p className="text-sm font-light leading-relaxed" style={{ color: 'var(--text-primary)' }}>
+                    Automation existed, but users manually validated outcomes because system logic and state were invisible.
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: 'var(--text-tertiary)' }}>My Mandate</p>
+                  <p className="text-sm font-light leading-relaxed" style={{ color: 'var(--text-primary)' }}>
+                    Redefine reconciliation architecture to make automation trustworthy and observable.
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: 'var(--text-tertiary)' }}>Team</p>
+                  <p className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>
+                    PM &bull; Engineers &bull; Data Science &bull; Enterprise Operations
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: 'var(--text-tertiary)' }}>What Changed</p>
+                  <div className="flex flex-col gap-1">
+                    {[
+                      'Replaced row-based configuration with spatial hierarchy',
+                      'Consolidated reconciliation into a state-aware workflow',
+                      'Prioritized exceptions by financial impact',
+                      'Introduced explainable automation signals',
+                    ].map((item, i) => (
+                      <p key={i} className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>• {item}</p>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 pt-6" style={{ borderTop: '1px solid var(--border-subtle)' }}>
+                <p className="text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: 'var(--text-tertiary)' }}>Impact</p>
+                <div className="flex flex-col gap-1">
+                  <p className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>• +30% automation adoption</p>
+                  <p className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>• 25% faster exception resolution</p>
+                  <p className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>• Reduced configuration errors</p>
+                  <p className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>• Decrease in manual override behavior</p>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+
+          {/* Jump-to links */}
+          <Reveal delay={0.2}>
+            <div className="flex flex-wrap gap-2">
+              <JumpLink href="#fg-context">Context</JumpLink>
+              <JumpLink href="#fg-tension">Core Tension</JumpLink>
+              <JumpLink href="#fg-hypotheses">Hypotheses</JumpLink>
+              <JumpLink href="#fg-solution">Solution</JumpLink>
+              <JumpLink href="#fg-results">Results</JumpLink>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <VerticalDivider />
+
+      {/* ═══════════════════════════════════════════════════════
+          3) CONTEXT — with icon pills + editorial pull-quote
+          ═══════════════════════════════════════════════════════ */}
+      <section className="pb-16 md:pb-20 px-6 md:px-12 lg:px-16" id="fg-context">
         <div className="max-w-4xl mx-auto">
           <Reveal>
             <p className="text-[11px] uppercase tracking-[0.3em] mb-8 text-center" style={{ color: 'var(--text-tertiary)' }}>
@@ -158,23 +320,36 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
               className="text-2xl md:text-3xl font-semibold mb-8 text-center leading-snug"
               style={{ color: 'var(--text-primary)' }}
             >
-              Fund operations are living systems.
+              Context
             </h2>
           </Reveal>
 
           <Reveal delay={0.15}>
+
+            <p className="text-sm md:text-base font-light leading-relaxed mb-4 text-center max-w-2xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
+              Fundguard supports asset managers operating complex fund hierarchies with time-based allocations and downstream financial dependencies.
+            </p>
+            <p className="text-sm md:text-base font-light leading-relaxed mb-4 text-center max-w-2xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
+              Automation accuracy was high. Adoption was not.
+            </p>
+            <p className="text-sm md:text-base font-light leading-relaxed mb-4 text-center max-w-2xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
+              The issue wasn&rsquo;t functionality. It was structural trust.
+            </p>
+            <p className="text-sm md:text-base font-light leading-relaxed mb-4 text-center max-w-2xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
+              Row-based configuration buried relationships. Exception handling prioritized volume over impact. System logic remained opaque.
+            </p>
             <p className="text-sm md:text-base font-light leading-relaxed mb-10 text-center max-w-2xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
-              They involve complex structures, time-based workflows, financial dependencies, and errors that silently propagate downstream. Yet the product represented this complexity through dense tables and fragmented dashboards.
+              Users manually verified automated results &mdash; even when unnecessary.
             </p>
           </Reveal>
 
-          {/* Complexity cards */}
+          {/* Complexity icon cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
             {[
-              { icon: <Layers className="w-5 h-5" strokeWidth={1.4} />, label: 'Deep parent-child fund structures' },
-              { icon: <Timer className="w-5 h-5" strokeWidth={1.4} />, label: 'Time-based workflows' },
-              { icon: <GitBranch className="w-5 h-5" strokeWidth={1.4} />, label: 'Financial allocations & dependencies' },
-              { icon: <AlertTriangle className="w-5 h-5" strokeWidth={1.4} />, label: 'Errors that propagate downstream' },
+              { icon: <Layers className="w-5 h-5" strokeWidth={1.4} />, label: 'Complex fund hierarchies' },
+              { icon: <Timer className="w-5 h-5" strokeWidth={1.4} />, label: 'Time-based allocations' },
+              { icon: <GitBranch className="w-5 h-5" strokeWidth={1.4} />, label: 'Downstream financial dependencies' },
+              { icon: <AlertTriangle className="w-5 h-5" strokeWidth={1.4} />, label: 'Opaque system logic' },
             ].map((item, i) => (
               <Reveal key={i} delay={i * 0.06}>
                 <div
@@ -188,6 +363,7 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
             ))}
           </div>
 
+          {/* Editorial pull-quote */}
           <Reveal delay={0.25}>
             <div
               className="pl-8 md:pl-12 max-w-2xl mx-auto"
@@ -197,23 +373,21 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
                 className="text-lg md:text-xl font-normal italic leading-snug"
                 style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-primary)' }}
               >
-                Tables hide system logic.
+                Row-based configuration buried relationships.
               </p>
               <p className="mt-3 text-sm font-light" style={{ color: 'var(--text-secondary)' }}>
-                Experts needed to reason about structure - not edit rows.
+                Experts reason about structure spatially &mdash; not through linear tables.
               </p>
             </div>
           </Reveal>
 
-          {/* Annotated table screenshot from Figma */}
+          {/* Annotated table screenshot */}
           <Reveal delay={0.3}>
             <div className="mt-14 max-w-5xl mx-auto">
-              <img
+              <ZoomableImage
                 src={imgTableBefore}
-                alt="FundGuard legacy table - annotations showing high cognitive load, poor hierarchy visibility, scalability issues, and limited flexibility"
+                alt="FundGuard legacy table - annotations showing high cognitive load, poor hierarchy visibility"
                 className="w-full h-auto"
-                loading="lazy"
-                decoding="async"
               />
             </div>
           </Reveal>
@@ -223,50 +397,33 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
       <VerticalDivider />
 
       {/* ═══════════════════════════════════════════════════════
-          THE CHALLENGE - Two-column editorial
+          4) CORE TENSION — Editorial pull-quote card
           ═══════════════════════════════════════════════════════ */}
-      <section className="pb-16 md:pb-20 px-6 md:px-12 lg:px-16">
+      <section className="pb-16 md:pb-20 px-6 md:px-12 lg:px-16" id="fg-tension">
         <div className="max-w-5xl mx-auto">
           <Reveal>
             <p className="text-[11px] uppercase tracking-[0.3em] mb-8 text-center" style={{ color: 'var(--text-tertiary)' }}>
-              The Challenge
+              Core Tension
             </p>
           </Reveal>
 
           <div className="grid grid-cols-1 md:grid-cols-5 gap-10 md:gap-16">
-            {/* Left - narrative */}
             <div className="md:col-span-3">
               <Reveal>
                 <h2
                   className="text-2xl md:text-3xl font-semibold mb-6 leading-snug"
                   style={{ color: 'var(--text-primary)' }}
                 >
-                  Enterprise users relied on manual reconciliation despite built-in automation.
+                  Core tension
                 </h2>
               </Reveal>
               <Reveal delay={0.1}>
-                <p className="text-sm md:text-base font-light leading-relaxed mb-5" style={{ color: 'var(--text-secondary)' }}>
-                  The system technically worked. But users did not trust it.
+                <p className="text-sm md:text-base font-light leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+                  When system relationships are invisible, automation feels risky. Trust requires visibility.
                 </p>
-              </Reveal>
-              <Reveal delay={0.15}>
-                <div className="flex flex-col gap-3">
-                  {[
-                    'AI outputs lacked transparency',
-                    'Data density created cognitive overload',
-                    'Fund relationships were abstract and row-based',
-                    'System state was fragmented across screens',
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <span className="w-1.5 h-1.5 rounded-full mt-[7px] flex-shrink-0" style={{ backgroundColor: 'var(--text-tertiary)' }} />
-                      <p className="text-sm md:text-base font-light" style={{ color: 'var(--text-primary)' }}>{item}</p>
-                    </div>
-                  ))}
-                </div>
               </Reveal>
             </div>
 
-            {/* Right - key tension */}
             <div className="md:col-span-2">
               <Reveal delay={0.15}>
                 <div
@@ -286,7 +443,7 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
                     className="text-lg md:text-xl font-medium leading-snug italic mt-2"
                     style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-primary)' }}
                   >
-                    It was orientation and confidence.
+                    It was confidence.
                   </p>
                 </div>
               </Reveal>
@@ -298,79 +455,13 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
       <VerticalDivider />
 
       {/* ═══════════════════════════════════════════════════════
-          WHAT USERS TOLD US - Editorial testimony cards
-          ═══════════════════════════════════════════════════════ */}
-      <section className="pb-16 md:pb-20 px-6 md:px-12 lg:px-16">
-        <div className="max-w-5xl mx-auto">
-          <Reveal>
-            <p className="text-[11px] uppercase tracking-[0.3em] mb-10 text-center" style={{ color: 'var(--text-tertiary)' }}>
-              What Users Told Us
-            </p>
-          </Reveal>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[
-              {
-                quote: "I'm always worried that one wrong configuration will move funds incorrectly, and it's hard to trace mistakes after they happen.",
-                role: 'Finance Manager',
-              },
-              {
-                quote: "The system technically works, but everyday actions take too many steps.",
-                role: 'Senior Accountant',
-              },
-              {
-                quote: "Updating fund data feels risky - I only find errors after reports are generated.",
-                role: 'Accountant',
-              },
-              {
-                quote: "Managing multiple funds feels fragmented. I constantly jump between screens.",
-                role: 'Operations Lead',
-              },
-            ].map((item, i) => (
-              <Reveal key={i} delay={i * 0.08}>
-                <div
-                  className="rounded-xl p-6 md:p-8 h-full flex flex-col"
-                  style={{ border: '1px solid var(--border-subtle)' }}
-                >
-                  <Quote className="w-5 h-5 mb-4 flex-shrink-0" strokeWidth={1.4} style={{ color: 'var(--text-tertiary)' }} />
-                  <p
-                    className="text-sm md:text-base font-light italic leading-relaxed flex-1"
-                    style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-primary)' }}
-                  >
-                    &ldquo;{item.quote}&rdquo;
-                  </p>
-                  <p className="text-xs uppercase tracking-wider mt-5" style={{ color: 'var(--text-tertiary)' }}>
-                    - {item.role}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-
-          {/* Insight pull-quote */}
-          <Reveal delay={0.35}>
-            <div className="mt-12 text-center">
-              <p
-                className="text-base md:text-lg font-light italic max-w-xl mx-auto"
-                style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-secondary)' }}
-              >
-                Experts don&rsquo;t need more power. They need clarity they can rely on.
-              </p>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      <VerticalDivider />
-
-      {/* ═══════════════════════════════════════════════════════
-          KEY INSIGHT - Serif blockquote with left accent border
+          KEY INSIGHT — Serif blockquote with accent border
           ═══════════════════════════════════════════════════════ */}
       <section className="py-16 md:py-24 px-6 md:px-12 lg:px-16">
         <div className="max-w-3xl mx-auto">
           <Reveal>
             <p className="text-[11px] uppercase tracking-[0.3em] mb-8 text-center" style={{ color: 'var(--text-tertiary)' }}>
-              Key Insight
+              Strategic Reframe
             </p>
           </Reveal>
           <Reveal delay={0.1}>
@@ -382,22 +473,22 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
                 className="text-2xl md:text-3xl lg:text-4xl font-normal leading-[1.25] mb-3"
                 style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-primary)' }}
               >
-                Users manually verified automated results - even when accuracy was high.
+                The question shifted from: &ldquo;How do we make reconciliation faster?&rdquo;
               </p>
               <p
                 className="text-lg md:text-xl font-normal leading-snug italic mt-4"
                 style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-primary)' }}
               >
-                Not because automation failed.
+                To: &ldquo;How do we make automation trustworthy?&rdquo;
               </p>
               <p
                 className="text-lg md:text-xl font-normal leading-snug italic"
                 style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-primary)' }}
               >
-                Because system logic was invisible.
+                {' '}
               </p>
               <p className="mt-6 text-sm md:text-base font-light" style={{ color: 'var(--text-secondary)' }}>
-                The core barrier was trust in system state.
+                Trust required: visible relationships, transparent state, explainable outcomes.
               </p>
             </div>
           </Reveal>
@@ -407,13 +498,13 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
       <VerticalDivider />
 
       {/* ═══════════════════════════════════════════════════════
-          HYPOTHESIS-DRIVEN DESIGN - Unique editorial framing
+          5) HYPOTHESES — with Problem/Hypothesis card layout
           ═══════════════════════════════════════════════════════ */}
-      <section className="pb-16 md:pb-20 px-6 md:px-12 lg:px-16">
+      <section className="pb-16 md:pb-20 px-6 md:px-12 lg:px-16" id="fg-hypotheses">
         <div className="max-w-5xl mx-auto">
           <Reveal>
             <p className="text-[11px] uppercase tracking-[0.3em] mb-10 text-center" style={{ color: 'var(--text-tertiary)' }}>
-              Hypothesis-Driven Design
+              Hypotheses
             </p>
           </Reveal>
 
@@ -428,22 +519,21 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
                   H1
                 </div>
                 <p className="text-sm md:text-base font-medium" style={{ color: 'var(--text-primary)' }}>
-                  Users struggle to understand fund relationships when configuration is row-based.
+                  Row-based configuration hides structure and makes relationships hard to reason about.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ml-0 md:ml-11">
-                {/* Problem */}
                 <div
                   className="rounded-xl p-6"
                   style={{ backgroundColor: 'var(--surface-secondary)' }}
                 >
-                  <p className="text-[10px] uppercase tracking-[0.2em] mb-4" style={{ color: 'var(--text-tertiary)' }}>Problem</p>
+                  <p className="text-[10px] uppercase tracking-[0.2em] mb-4" style={{ color: 'var(--text-tertiary)' }}>How we validated</p>
                   <div className="flex flex-col gap-2.5">
                     {[
-                      'Connections split across "Feeding To" and "Accepting From"',
-                      'Relationships exist across multiple rows',
-                      'Users must mentally reconstruct structure',
+                      'Walkthroughs with operations stakeholders to map real fund setup flows and failure points.',
+                      'Prototype reviews comparing "table edits" vs "connected hierarchy" comprehension.',
+                      'Success criteria: faster understanding of relationships + fewer configuration mistakes.',
                     ].map((item, i) => (
                       <div key={i} className="flex items-start gap-2.5">
                         <span className="w-1 h-1 rounded-full mt-[7px] flex-shrink-0" style={{ backgroundColor: 'var(--text-tertiary)' }} />
@@ -453,7 +543,6 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
                   </div>
                 </div>
 
-                {/* Hypothesis */}
                 <div
                   className="rounded-xl p-6"
                   style={{ border: '1px solid var(--border-subtle)' }}
@@ -481,22 +570,21 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
                   H2
                 </div>
                 <p className="text-sm md:text-base font-medium" style={{ color: 'var(--text-primary)' }}>
-                  Users lack confidence because they cannot validate full system state in one place.
+                  Users need a single, visible source of truth to trust automation outcomes.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ml-0 md:ml-11">
-                {/* Problem */}
                 <div
                   className="rounded-xl p-6"
                   style={{ backgroundColor: 'var(--surface-secondary)' }}
                 >
-                  <p className="text-[10px] uppercase tracking-[0.2em] mb-4" style={{ color: 'var(--text-tertiary)' }}>Problem</p>
+                  <p className="text-[10px] uppercase tracking-[0.2em] mb-4" style={{ color: 'var(--text-tertiary)' }}>How we validated</p>
                   <div className="flex flex-col gap-2.5">
                     {[
-                      'Status, allocation %, class, and direction spread across inputs',
-                      'No single source-of-truth view',
-                      'Downstream impact unclear',
+                      'Observed where users jumped between screens to confirm status, allocation, and direction.',
+                      'Tested a single-source-of-truth view that shows funds, states, and allocations in one place.',
+                      'Success criteria: fewer checks, fewer tabs, and higher confidence before running automation.',
                     ].map((item, i) => (
                       <div key={i} className="flex items-start gap-2.5">
                         <span className="w-1 h-1 rounded-full mt-[7px] flex-shrink-0" style={{ backgroundColor: 'var(--text-tertiary)' }} />
@@ -506,7 +594,6 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
                   </div>
                 </div>
 
-                {/* Hypothesis */}
                 <div
                   className="rounded-xl p-6"
                   style={{ border: '1px solid var(--border-subtle)' }}
@@ -528,7 +615,7 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
       <VerticalDivider />
 
       {/* ═══════════════════════════════════════════════════════
-          DESIGN PRINCIPLE - Centered editorial statement
+          DESIGN PRINCIPLE — Centered editorial + icon cards
           ═══════════════════════════════════════════════════════ */}
       <section className="py-14 md:py-20 px-6 md:px-12 lg:px-16">
         <div className="max-w-3xl mx-auto text-center">
@@ -537,7 +624,6 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
               Design Principle
             </p>
           </Reveal>
-
           <Reveal delay={0.1}>
             <h2
               className="text-2xl md:text-3xl lg:text-4xl font-semibold leading-snug mb-8"
@@ -549,10 +635,10 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
             {[
-              { icon: <Network className="w-5 h-5" strokeWidth={1.4} />, label: 'Relationships are spatial, not abstract' },
-              { icon: <Eye className="w-5 h-5" strokeWidth={1.4} />, label: 'Identity, type, and status visible immediately' },
-              { icon: <Lightbulb className="w-5 h-5" strokeWidth={1.4} />, label: 'System logic visible before editing' },
-              { icon: <GripVertical className="w-5 h-5" strokeWidth={1.4} />, label: 'Drag-and-drop mirrors mental models' },
+              { icon: <Network className="w-5 h-5" strokeWidth={1.4} />, label: 'Visible relationships' },
+              { icon: <Eye className="w-5 h-5" strokeWidth={1.4} />, label: 'Transparent state' },
+              { icon: <Lightbulb className="w-5 h-5" strokeWidth={1.4} />, label: 'Explainable outcomes' },
+              { icon: <GripVertical className="w-5 h-5" strokeWidth={1.4} />, label: 'Spatial reasoning over linear editing' },
             ].map((item, i) => (
               <Reveal key={i} delay={i * 0.06}>
                 <div className="flex flex-col items-center text-center gap-3 p-4">
@@ -573,7 +659,7 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
           </Reveal>
         </div>
 
-        {/* Hierarchy View - Canvas-Based */}
+        {/* Canvas-Based Hierarchy View - Highlighted card */}
         <Reveal delay={0.35}>
           <div
             className="max-w-5xl mx-auto mt-16 rounded-2xl p-8 md:p-12"
@@ -586,18 +672,16 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
               className="text-xl md:text-2xl font-semibold mb-4 leading-snug"
               style={{ color: 'var(--text-primary)' }}
             >
-              A visual, intuitive way to build fund hierarchies
+              Spatial hierarchy replaces linear configuration
             </h3>
             <p className="text-sm md:text-base font-light leading-relaxed mb-8" style={{ color: 'var(--text-secondary)' }}>
-              This new hierarchy view replaces the legacy table-based structure with a canvas-driven, drag-and-drop experience. Funds are represented as nodes, and their relationships are shown visually, making complex structures easy to understand and manage.
+              Replaced row-based configuration with a spatial hierarchy. Experts reason about structure spatially &mdash; not through linear tables. Funds are represented as nodes, and their relationships are shown visually, making complex structures easy to understand and manage.
             </p>
             <div className="rounded-xl overflow-hidden">
-              <img
+              <ZoomableImage
                 src={imgHierarchyCanvas}
                 alt="Canvas-based fund hierarchy view - nodes represent funds, connections show allocations"
                 className="w-full h-auto"
-                loading="lazy"
-                decoding="async"
               />
             </div>
           </div>
@@ -607,19 +691,123 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
       <VerticalDivider />
 
       {/* ═══════════════════════════════════════════════════════
-          DESIGN FLOW - Annotated canvas walkthrough
+          6) SOLUTION — Before/After + Vertical timeline
           ═══════════════════════════════════════════════════════ */}
+      <section className="pb-16 md:pb-20 px-6 md:px-12 lg:px-16" id="fg-solution">
+        <div className="max-w-4xl mx-auto">
+          <Reveal>
+            <p className="text-[11px] uppercase tracking-[0.3em] mb-4 text-center" style={{ color: 'var(--text-tertiary)' }}>
+              Solution
+            </p>
+          </Reveal>
+          <Reveal delay={0.05}>
+            <h2 className="text-2xl md:text-3xl font-semibold text-center mb-6" style={{ color: 'var(--text-primary)' }}>
+              Solution
+            </h2>
+            <p className="text-sm md:text-base font-light leading-relaxed text-center mb-14 max-w-2xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
+              Four connected improvements redefined how users understand structure, verify state, and act on exceptions.
+            </p>
+          </Reveal>
+
+          {/* Before / After Block */}
+          <Reveal delay={0.08}>
+            <div className="mb-14">
+              <p className="text-xs uppercase tracking-[0.15em] mb-4" style={{ color: 'var(--text-tertiary)' }}>Before vs After</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <ZoomableImage
+                    src={imgTableBefore}
+                    alt="Before: row-based configuration hides structure"
+                    className="w-full h-auto rounded-xl"
+                  />
+                  <p className="mt-3 text-xs md:text-sm font-light" style={{ color: 'var(--text-secondary)' }}>
+                    Before: row-based configuration hides structure.
+                  </p>
+                </div>
+                <div>
+                  <ZoomableImage
+                    src={imgHierarchyCanvas}
+                    alt="After: canvas hierarchy exposes relationships"
+                    className="w-full h-auto rounded-xl"
+                  />
+                  <p className="mt-3 text-xs md:text-sm font-light" style={{ color: 'var(--text-secondary)' }}>
+                    After: canvas hierarchy exposes relationships.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+
+          {/* Vertical timeline — Four improvements */}
+          <div className="relative">
+            <div
+              className="absolute left-[15px] md:left-[19px] top-4 bottom-4 w-px"
+              style={{ backgroundColor: 'var(--border-subtle)' }}
+            />
+
+            {[
+              {
+                num: '01',
+                title: 'Canvas-Based Fund Hierarchy',
+                desc: 'Replaced row-based configuration with a spatial hierarchy. Experts reason about structure spatially — not through linear tables.',
+                impact: 'Reduced configuration errors · Improved structural comprehension · Increased predictability.',
+              },
+              {
+                num: '02',
+                title: 'Guided Reconciliation Workflow',
+                desc: 'Unified fragmented steps into a single state-aware flow. Users could clearly see current system state, dependencies, next action, and consequences.',
+                impact: '25% faster exception resolution · Reduced cognitive fragmentation.',
+              },
+              {
+                num: '03',
+                title: 'Risk-Based Exception Handling',
+                desc: 'Reprioritized exceptions by financial impact instead of volume.',
+                impact: 'Clearer prioritization · Reduced downstream propagation.',
+              },
+              {
+                num: '04',
+                title: 'Explainable Automation Signals',
+                desc: 'Introduced visible confidence and traceability indicators. Automation shifted from black-box behavior to observable system logic.',
+                impact: '+30% automation adoption · Reduced manual overrides.',
+              },
+            ].map((step, i) => (
+              <Reveal key={i} delay={i * 0.1}>
+                <div className="flex items-start gap-6 md:gap-8 mb-12 last:mb-0">
+                  <div
+                    className="relative z-10 w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center flex-shrink-0 text-xs md:text-sm font-semibold"
+                    style={{ backgroundColor: 'var(--text-primary)', color: 'white' }}
+                  >
+                    {step.num}
+                  </div>
+                  <div className="pt-0.5 flex-1">
+                    <p className="text-base md:text-lg font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
+                      {step.title}
+                    </p>
+                    <p className="text-sm md:text-base font-light leading-relaxed mb-2" style={{ color: 'var(--text-secondary)' }}>
+                      {step.desc}
+                    </p>
+                    <p className="text-sm font-light italic" style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-primary)' }}>
+                      Primary impact: {step.impact}
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <VerticalDivider />
+
+      {/* Design Flow images */}
       <section className="pb-16 md:pb-20 px-6 md:px-12 lg:px-16">
         <div className="max-w-5xl mx-auto">
           <Reveal>
             <p className="text-[11px] uppercase tracking-[0.3em] mb-4 text-center" style={{ color: 'var(--text-tertiary)' }}>
               Design Flow
             </p>
-            <p
-              className="text-sm md:text-base font-light text-center mb-12"
-              style={{ color: 'var(--text-secondary)' }}
-            >
-              Explore structure before interaction
+            <p className="text-sm md:text-base font-light text-center mb-12" style={{ color: 'var(--text-secondary)' }}>
+              Expose structure before interaction
             </p>
           </Reveal>
 
@@ -632,127 +820,159 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
               { src: imgFlow5, alt: 'Design flow - final hierarchy with outcome' },
             ].map((img, i) => (
               <Reveal key={i} delay={i * 0.08}>
-                <img
+                <ZoomableImage
                   src={img.src}
                   alt={img.alt}
                   className="w-full h-auto rounded-xl"
-                  loading="lazy"
-                  decoding="async"
                 />
               </Reveal>
             ))}
           </div>
-
         </div>
       </section>
 
       <VerticalDivider />
 
       {/* ═══════════════════════════════════════════════════════
-          THE SOLUTION - Vertical timeline with editorial framing
+          7) LEADERSHIP
           ═══════════════════════════════════════════════════════ */}
-      <section className="pb-14 md:pb-18 px-6 md:px-12 lg:px-16">
+      <section className="pb-16 md:pb-20 px-6 md:px-12 lg:px-16">
         <div className="max-w-4xl mx-auto">
           <Reveal>
-            <p className="text-[11px] uppercase tracking-[0.3em] mb-4 text-center" style={{ color: 'var(--text-tertiary)' }}>
-              The Solution
+            <p className="text-[11px] uppercase tracking-[0.3em] mb-4" style={{ color: 'var(--text-tertiary)' }}>
+              Leadership
             </p>
-          </Reveal>
-          <Reveal delay={0.05}>
-            <h2 className="text-2xl md:text-3xl font-semibold text-center mb-14" style={{ color: 'var(--text-primary)' }}>
-              Four connected system improvements
+            <h2
+              className="text-2xl md:text-3xl font-semibold mb-8 leading-snug"
+              style={{ color: 'var(--text-primary)' }}
+            >
+              How I led the work
             </h2>
           </Reveal>
 
-          <div className="relative">
-            {/* Connecting vertical line */}
-            <div
-              className="absolute left-[15px] md:left-[19px] top-4 bottom-4 w-px"
-              style={{ backgroundColor: 'var(--border-subtle)' }}
-            />
+          <Reveal delay={0.05}>
+            <p className="text-sm md:text-base font-light leading-relaxed mb-6" style={{ color: 'var(--text-secondary)' }}>
+              This initiative required cross-functional realignment.
+            </p>
+          </Reveal>
 
-            {[
-              {
-                num: '01',
-                title: 'Canvas-Based Fund Hierarchy',
-                desc: 'A visual, drag-and-drop hierarchy replaced the legacy table structure. Funds represented as nodes, allocations displayed directly on connections, status visible at a glance.',
-                cta: 'From editing rows → to understanding structure.',
-              },
-              {
-                num: '02',
-                title: 'Guided Reconciliation Workflow',
-                desc: 'Replaced dashboard-heavy navigation with structured progression: clear checkpoints, visible state transitions, context-aware actions, reduced tab switching.',
-                cta: null,
-              },
-              {
-                num: '03',
-                title: 'Intelligent Exception Handling',
-                desc: 'Risk-based prioritization with financial impact surfaced first. Contextual resolution tools reduced cognitive overload.',
-                cta: null,
-              },
-              {
-                num: '04',
-                title: 'Explainable AI',
-                desc: 'Confidence indicators, traceable reasoning paths, audit trail visibility, and clear anomaly signals. Automation became inspectable - not opaque.',
-                cta: null,
-              },
-            ].map((step, i) => (
-              <Reveal key={i} delay={i * 0.1}>
-                <div className="flex items-start gap-6 md:gap-8 mb-12 last:mb-0">
-                  {/* Timeline node */}
-                  <div
-                    className="relative z-10 w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center flex-shrink-0 text-xs md:text-sm font-semibold"
-                    style={{ backgroundColor: 'var(--text-primary)', color: 'white' }}
-                  >
-                    {step.num}
-                  </div>
-                  {/* Content */}
-                  <div className="pt-0.5 flex-1">
-                    <p className="text-base md:text-lg font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
-                      {step.title}
-                    </p>
-                    <p className="text-sm md:text-base font-light leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-                      {step.desc}
-                    </p>
-                    {step.cta && (
-                      <p
-                        className="mt-3 text-sm font-light italic"
-                        style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-primary)' }}
-                      >
-                        {step.cta}
-                      </p>
-                    )}
-                  </div>
+          <Reveal delay={0.1}>
+            <div className="flex flex-col gap-3">
+              {[
+                'Established "Expose structure before interaction" as a core product principle.',
+                'Led architectural concept reviews with engineering leadership.',
+                'Standardized system-state visibility patterns across workflows.',
+                'Reframed automation success metrics from throughput to trust indicators.',
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <span className="w-1.5 h-1.5 rounded-full mt-[7px] flex-shrink-0" style={{ backgroundColor: 'var(--text-tertiary)' }} />
+                  <p className="text-sm md:text-base font-light" style={{ color: 'var(--text-primary)' }}>{item}</p>
                 </div>
-              </Reveal>
-            ))}
-          </div>
+              ))}
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.2}>
+            <div
+              className="pl-8 md:pl-12 max-w-2xl mt-8"
+              style={{ borderLeft: '3px solid var(--text-primary)' }}
+            >
+              <p
+                className="text-lg md:text-xl font-normal italic leading-snug"
+                style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-primary)' }}
+              >
+                This was not a UI redesign.
+              </p>
+              <p
+                className="text-lg md:text-xl font-normal italic leading-snug mt-1"
+                style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-primary)' }}
+              >
+                It was a behavioral shift across teams.
+              </p>
+            </div>
+          </Reveal>
         </div>
       </section>
 
       <VerticalDivider />
 
       {/* ═══════════════════════════════════════════════════════
-          RESULTS - Outlined stat cards on white
+          8) REALITY CHECK
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 px-6 md:px-12 lg:px-16">
+      <section className="pb-16 md:pb-20 px-6 md:px-12 lg:px-16">
+        <div className="max-w-4xl mx-auto">
+          <Reveal>
+            <p className="text-[11px] uppercase tracking-[0.3em] mb-4" style={{ color: 'var(--text-tertiary)' }}>
+              Reality Check
+            </p>
+            <h2
+              className="text-2xl md:text-3xl font-semibold mb-6 leading-snug"
+              style={{ color: 'var(--text-primary)' }}
+            >
+              The messy middle
+            </h2>
+          </Reveal>
+
+          <Reveal delay={0.1}>
+            <p className="text-sm md:text-base font-light leading-relaxed mb-6" style={{ color: 'var(--text-secondary)' }}>
+              This wasn&rsquo;t a UI redesign—it was a behavioral change: moving teams from manual verification to confident automation.
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.15}>
+            <div className="flex flex-col gap-3 mb-8">
+              {[
+                'Users feared silent downstream errors, so "accuracy" alone didn\'t change behavior.',
+                'A canvas model raised scale/performance questions (large hierarchies, dense relationships).',
+                'Ops workflows were fragmented across screens, so fixes had to reduce context switching—not add new UI.',
+                'We had to balance flexibility for experts with guardrails that prevent risky configurations.',
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <span className="w-1.5 h-1.5 rounded-full mt-[7px] flex-shrink-0" style={{ backgroundColor: 'var(--text-tertiary)' }} />
+                  <p className="text-sm md:text-base font-light" style={{ color: 'var(--text-primary)' }}>{item}</p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.2}>
+            <div
+              className="pl-8 md:pl-12 max-w-2xl"
+              style={{ borderLeft: '3px solid var(--text-primary)' }}
+            >
+              <p
+                className="text-lg md:text-xl font-normal italic leading-snug"
+                style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-primary)' }}
+              >
+                The design goal wasn&rsquo;t speed. It was confidence.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <VerticalDivider />
+
+      {/* ═══════════════════════════════════════════════════════
+          9) RESULTS — Outlined stat cards on white
+          ═══════════════════════════════════════════════════════ */}
+      <section className="py-16 md:py-24 px-6 md:px-12 lg:px-16" id="fg-results">
         <div className="max-w-4xl mx-auto">
           <Reveal>
             <p className="text-[11px] uppercase tracking-[0.3em] mb-4 text-center" style={{ color: 'var(--text-tertiary)' }}>
               Results
             </p>
             <h2 className="text-2xl md:text-3xl font-semibold text-center mb-14" style={{ color: 'var(--text-primary)' }}>
-              Measurable impact across the platform
+              Results
             </h2>
           </Reveal>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-10">
             {[
-              { metric: '+30%', desc: 'increase in automation adoption' },
+              { metric: '+30%', desc: 'automation adoption' },
               { metric: '25%', desc: 'faster exception resolution' },
-              { metric: null, icon: <CheckCircle2 className="w-10 h-10 md:w-12 md:h-12" strokeWidth={1.2} />, desc: 'Reduction in reconciliation-related support tickets' },
-              { metric: null, icon: <CheckCircle2 className="w-10 h-10 md:w-12 md:h-12" strokeWidth={1.2} />, desc: 'Fewer configuration errors' },
-              { metric: null, icon: <CheckCircle2 className="w-10 h-10 md:w-12 md:h-12" strokeWidth={1.2} />, desc: 'Increased enterprise expansion into advanced modules' },
+              { metric: null, icon: <CheckCircle2 className="w-10 h-10 md:w-12 md:h-12" strokeWidth={1.2} />, desc: 'Reduced configuration errors' },
+              { metric: null, icon: <CheckCircle2 className="w-10 h-10 md:w-12 md:h-12" strokeWidth={1.2} />, desc: 'Decreased manual verification behaviors' },
             ].map((item, i) => (
               <Reveal key={i} delay={i * 0.08}>
                 <div
@@ -784,13 +1004,13 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
                 className="text-base md:text-lg font-normal italic leading-relaxed"
                 style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-primary)' }}
               >
-                Most importantly: Users stopped manually validating every automated result.
+                Most importantly:
               </p>
               <p
                 className="text-base md:text-lg font-semibold mt-2"
                 style={{ color: 'var(--text-primary)' }}
               >
-                They trusted the system state.
+                Automation became the default &mdash; not something users felt compelled to double-check.
               </p>
             </div>
           </Reveal>
@@ -798,21 +1018,19 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
       </section>
 
       {/* ═══════════════════════════════════════════════════════
-          CLOSING - Dark band with subtle pattern
+          CLOSING — Dark band with subtle pattern
           ═══════════════════════════════════════════════════════ */}
       <section
         className="relative py-24 md:py-32 px-6 md:px-12 lg:px-16 text-white overflow-hidden"
         style={{ backgroundColor: 'var(--color-gray-900)' }}
       >
-        {/* Subtle grid pattern */}
         <div
           className="absolute inset-0 opacity-[0.04]"
           style={{
-            backgroundImage: `linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)`,
+            backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
             backgroundSize: '60px 60px',
           }}
         />
-        {/* Radial glow */}
         <div
           className="absolute inset-0"
           style={{
@@ -831,13 +1049,13 @@ export default function CaseStudyFundguardContent({ onNextStudy }: { onNextStudy
               className="text-2xl md:text-3xl lg:text-4xl font-normal leading-[1.3] mb-2 text-white"
               style={{ fontFamily: 'var(--font-serif)' }}
             >
-              Enterprise UX succeeds when users stop fighting the interface
+              Trust isn&rsquo;t a feature.
             </p>
             <p
               className="text-2xl md:text-3xl lg:text-4xl font-normal leading-[1.3] italic text-white/80"
               style={{ fontFamily: 'var(--font-serif)' }}
             >
-              and start reasoning about the system.
+              It&rsquo;s the outcome of visible system logic.
             </p>
           </Reveal>
           <Reveal delay={0.2}>

@@ -21,7 +21,7 @@ function figmaAssetResolver(): Plugin {
 }
 
 export default defineConfig({
-  base: '/MyPortfolio/',
+  base: '/ElranPortfolio/',
   plugins: [
     figmaAssetResolver(),
     react(),
