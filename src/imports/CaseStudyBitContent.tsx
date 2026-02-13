@@ -204,7 +204,7 @@ export default function CaseStudyBitContent({ onNextStudy }: { onNextStudy?: () 
           <Reveal delay={0.25}>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mt-10 pt-8 text-left" style={{ borderTop: '1px solid var(--border-subtle)' }}>
               {[
-                { label: 'Role', value: 'Head of Product Design' },
+                { label: 'Role', value: 'Senior UX Specialist' },
                 { label: 'Team', value: 'PM · Engineering · Growth · Marketing' },
                 { label: 'Scope', value: 'Core payment flows · Activation · Engagement' },
                 { label: 'Scale', value: '#1 tier-2 P2P payment app · 2M+ users' },

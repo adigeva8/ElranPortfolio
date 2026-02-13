@@ -289,7 +289,7 @@ export default function CaseStudyBluevineContent({ onNextStudy }: { onNextStudy?
           <Reveal delay={0.25}>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mt-10 pt-8 text-left" style={{ borderTop: '1px solid var(--border-subtle)' }}>
               {[
-                { label: 'Role', value: 'Head of Product Design' },
+                { label: 'Role', value: 'Senior Product Designer' },
                 { label: 'Team', value: 'PM · Engineering · Data' },
                 { label: 'Scope', value: 'Registration, onboarding, plan selection, upgrade flows' },
                 { label: 'Impact', value: '+7% reg-to-plan conversion · Increased activation · Reduced hesitation' },
